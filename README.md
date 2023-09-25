@@ -1,5 +1,7 @@
 # Process Governor
 
+![Logo Process Governor](src/resource/favicon.ico)
+
 **Process Governor** is a Python utility designed to manage Windows processes and services by adjusting their
 priorities, I/O priorities, and core affinity based on user-defined rules in a JSON configuration.
 
