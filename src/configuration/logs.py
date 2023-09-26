@@ -12,7 +12,7 @@ class Logs:
     and the number of backup log files to keep.
     """
 
-    enable: bool = False
+    enable: bool = True
     """
     A boolean flag to enable or disable logging. Default is False (logging is disabled).
     """

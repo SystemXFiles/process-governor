@@ -43,10 +43,10 @@ class RulesService(ABC):
         Args:
             config (Config): The configuration object containing the rules to be applied.
         """
-        cls.__light_gc_ignored_process_parameters()
-
         if not config.rules:
             return
+
+        cls.__light_gc_ignored_process_parameters()
 
         processes: dict[int, Process] = ProcessesInfoService.get_new_processes()
         services: dict[int, Service] = ServicesInfoService.get_list()
@@ -87,7 +87,7 @@ class RulesService(ABC):
                                     f"{', ' + service_info.name + '' if service_info else ''}"
                                     f")")
             except NoSuchProcess as _:
-                pass
+                logging.warning(f"No such process: {pid}")
 
     @classmethod
     def __set_ionice(cls, not_success, process_info, rule):

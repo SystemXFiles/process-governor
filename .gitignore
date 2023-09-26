@@ -167,3 +167,4 @@ cython_debug/
 /logging.txt
 
 /pg.lock
+/sandbox.py

@@ -87,7 +87,7 @@ JSON-объект в массиве.
     - `"VeryLow"`
     - `"Low"`
     - `"Normal"`
-    - `"High"`
+    - `"High"`: Установка приоритета ввода-вывода на "High" может вызвать ошибку AccessDenied в большинстве случаев.
     - Пример: `"ioPriority": { "py/object": "psutil._pswindows.IOPriority", "value": "Normal" }`
 
 - `affinity` (строка, опционально): Определяет привязку процесса к ядру CPU. Вы можете указать привязку следующим

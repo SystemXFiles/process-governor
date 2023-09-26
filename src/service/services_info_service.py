@@ -1,5 +1,4 @@
 from abc import ABC
-from fnmatch import fnmatch
 from typing import Optional
 
 import psutil

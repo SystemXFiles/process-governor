@@ -5,6 +5,9 @@ from functools import wraps, lru_cache
 from time import time
 from typing import Type, TypeVar, Callable, List, Optional
 
+import win32con
+from win32api import MessageBoxEx
+
 T = TypeVar('T')
 
 
@@ -45,6 +48,7 @@ def cached(timeout_in_seconds, logged=False) -> Callable[..., T]:
     Returns:
         Callable: A decorated function with caching capabilities.
     """
+
     def decorator(function: Callable[..., T]) -> Callable[..., T]:
         if logged:
             logging.info("-- Initializing cache for", function.__name__)
@@ -128,3 +132,17 @@ def fnmatch_cached(name: str, pattern: str) -> bool:
         bool: True if the name matches the pattern, False otherwise.
     """
     return pattern and fnmatch(name, pattern)
+
+
+def yesno_error_box(title: str, message: str) -> bool:
+    """
+    Display a yes/no error message box with a specified title and message.
+
+    Args:
+        title (str): The title of the message box.
+        message (str): The message to be displayed in the message box.
+
+    Returns:
+        bool: True if the user clicks "Yes," False if the user clicks "No."
+    """
+    return MessageBoxEx(None, message, title, win32con.MB_ICONERROR | win32con.MB_YESNO) == win32con.IDYES

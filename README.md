@@ -87,7 +87,7 @@ object within an array.
     - `"VeryLow"`
     - `"Low"`
     - `"Normal"`
-    - `"High"`
+    - `"High"`: Setting the I/O priority to "High" may result in an AccessDenied error in most cases.
     - Example: `"ioPriority": { "py/object": "psutil._pswindows.IOPriority", "value": "Normal" }`
 
 - `affinity` (string, optional): Specifies CPU core affinity. You can define affinity as:
