@@ -29,8 +29,9 @@ You can close the program by accessing the tray icon.
 
 You can create a portable version of the program using **pyvan**. Follow these steps to build the portable version:
 
-1. Run the `python build_portable.py` script.
-2. After the script completes, you will find the portable build in the `dist` folder.
+1. Install pyvan using `pip install pyvan`.
+2. Run the `python build_portable.py` script.
+3. After the script completes, you will find the portable build in the `dist` folder.
 
 Now you have a portable version of the program that you can use without installation.
 
