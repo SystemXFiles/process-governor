@@ -15,7 +15,7 @@ from pystray._win32 import Icon
 
 from configuration.config import Config
 from resource.resource import get_tray_icon
-from service.config_service import ConfigService
+from service.config_service import ConfigService, CONFIG_FILE_NAME
 from service.rules_service import RulesService
 from util.utils import yesno_error_box
 
@@ -77,6 +77,7 @@ def init_tray(config: Config) -> Icon:
         Icon: The system tray icon object.
     """
     menu: tuple[MenuItem] = (
+        MenuItem('Open JSON config', lambda ico: os.startfile(CONFIG_FILE_NAME)),
         MenuItem('Open log file', lambda ico: os.startfile(config.logging.filename)),
         MenuItem('Quit', lambda ico: ico.stop()),
     )
