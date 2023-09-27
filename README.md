@@ -23,7 +23,9 @@ To use Process Governor, follow these steps:
 3. Configure your rules in the `config.json` file. You can create the `config.json` file by running the program once.
 4. Run the `process-governor.py` script: `python process-governor.py`
 
-You can close the program by accessing the tray icon.
+You can close the program by accessing the tray icon:
+
+![Tray menu screenshot](docs/tray_menu_screenshot.png)
 
 ## Creating a Portable Build
 
