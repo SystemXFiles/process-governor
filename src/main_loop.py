@@ -66,7 +66,7 @@ def priority_setup():
         pass
 
 
-def init_tray() -> Icon:
+def init_tray(config: Config) -> Icon:
     """
     Display the system tray icon and menu, allowing the user to gracefully exit the application.
 
@@ -77,6 +77,7 @@ def init_tray() -> Icon:
         Icon: The system tray icon object.
     """
     menu: tuple[MenuItem] = (
+        MenuItem('Open log file', lambda ico: os.startfile(config.logging.filename)),
         MenuItem('Quit', lambda ico: ico.stop()),
     )
 
@@ -131,5 +132,5 @@ def start_app():
     log_setup(config)
     priority_setup()
 
-    tray: Icon = init_tray()
+    tray: Icon = init_tray(config)
     main_loop(config, tray)
