@@ -43,22 +43,11 @@ JSON-конфигурации.
 Файл конфигурации для Process Governor имеет формат JSON. Ниже мы описываем структуру и доступные параметры в
 файле `config.json`.
 
-### Структура JSON для сериализации
-
-Для правильной десериализации с использованием jsonpickle убедитесь, что в JSON-конфигурации присутствуют следующие
-теги "py/object":
-
-- `"py/object": "configuration.config.Config"`
-- `"py/object": "configuration.logs.Logs"`
-- `"py/object": "configuration.rule.Rule"`
-- `"py/object": "psutil._pswindows.Priority"`
-- `"py/object": "psutil._pswindows.IOPriority"`
-
 #### Оценка Правил
 
 - Правила для процессов оцениваются в том порядке, в котором они указаны в файле конфигурации.
 - Правила для служб имеют более высокий приоритет, чем правила для процессов, и переопределяют их, если найдено
-  совпадение с службой.
+  совпадение со службой.
 
 ### Секция `rules`
 
@@ -83,14 +72,14 @@ JSON-объект в массиве.
     - `"AboveNormal"`
     - `"High"`
     - `"Realtime"`
-    - Пример: `"priority": { "py/object": "psutil._pswindows.Priority", "value": "High" }`
+    - Пример: `"priority": "High" `
 
 - `ioPriority` (строка, опционально): Устанавливает приоритет ввода/вывода для процесса или службы. Допустимые значения:
     - `"VeryLow"`
     - `"Low"`
     - `"Normal"`
     - `"High"`: Установка приоритета ввода-вывода на "High" может вызвать ошибку AccessDenied в большинстве случаев.
-    - Пример: `"ioPriority": { "py/object": "psutil._pswindows.IOPriority", "value": "Normal" }`
+    - Пример: `"ioPriority": "Normal"`
 
 - `affinity` (строка, опционально): Определяет привязку процесса к ядру CPU. Вы можете указать привязку следующим
   образом:
@@ -107,11 +96,9 @@ JSON-объект в массиве.
 
 ```json
 {
-  "py/object": "configuration.config.Config",
   "ruleApplyIntervalSeconds": 1,
   "logging": {
-    "py/object": "configuration.logs.Logs",
-    "enable": false,
+    "enable": true,
     "filename": "logging.txt",
     "level": "WARN",
     "maxBytes": 1048576,
@@ -119,37 +106,22 @@ JSON-объект в массиве.
   },
   "rules": [
     {
-      "py/object": "configuration.rule.Rule",
       "processSelector": "example.exe",
-      "priority": {
-        "py/object": "psutil._pswindows.Priority",
-        "value": "High"
-      },
-      "ioPriority": {
-        "py/object": "psutil._pswindows.IOPriority",
-        "value": "Normal"
-      },
+      "priority": "High",
+      "ioPriority": "Normal",
       "affinity": "1;3-5"
     },
     {
-      "py/object": "configuration.rule.Rule",
       "serviceSelector": "Audio*",
-      "priority": {
-        "py/object": "psutil._pswindows.Priority",
-        "value": "Realtime"
-      },
-      "ioPriority": {
-        "py/object": "psutil._pswindows.IOPriority",
-        "value": "High"
-      },
+      "priority": "Realtime",
+      "ioPriority": "High",
       "affinity": "0;2;4"
     }
   ]
 }
 ```
 
-В этом примере определены два правила: одно для процесса и одно для службы. Правила для служб имеют приоритет над
-правилами для процессов, если найдено совпадение с службой.
+В этом примере определены два правила: одно для процесса и одно для службы.
 
 ### Лицензия
 

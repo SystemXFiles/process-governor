@@ -42,17 +42,6 @@ Now you have a portable version of the program that you can use without installa
 The configuration file for Process Governor is in JSON format. Below, we describe the structure and available parameters
 within the `config.json` file.
 
-### JSON Structure for Serialization
-
-To ensure correct deserialization using jsonpickle, make sure the following "py/object" tags are present in the JSON
-configuration:
-
-- `"py/object": "configuration.config.Config"`
-- `"py/object": "configuration.logs.Logs"`
-- `"py/object": "configuration.rule.Rule"`
-- `"py/object": "psutil._pswindows.Priority"`
-- `"py/object": "psutil._pswindows.IOPriority"`
-
 #### Rule Evaluation
 
 - Process rules are evaluated in the order they appear in the configuration file.
@@ -84,14 +73,14 @@ object within an array.
     - `"AboveNormal"`
     - `"High"`
     - `"Realtime"`
-    - Example: `"priority": { "py/object": "psutil._pswindows.Priority", "value": "High" }`
+    - Example: `"priority": "High"`
 
 - `ioPriority` (string, optional): Sets the I/O priority for the process or service. Valid values are:
     - `"VeryLow"`
     - `"Low"`
     - `"Normal"`
     - `"High"`: Setting the I/O priority to "High" may result in an AccessDenied error in most cases.
-    - Example: `"ioPriority": { "py/object": "psutil._pswindows.IOPriority", "value": "Normal" }`
+    - Example: `"ioPriority": "Normal"`
 
 - `affinity` (string, optional): Specifies CPU core affinity. You can define affinity as:
     - A range, inclusive (e.g., "1-5").
@@ -107,11 +96,9 @@ Here's an example `config.json` file with rules:
 
 ```json
 {
-  "py/object": "configuration.config.Config",
   "ruleApplyIntervalSeconds": 1,
   "logging": {
-    "py/object": "configuration.logs.Logs",
-    "enable": false,
+    "enable": true,
     "filename": "logging.txt",
     "level": "WARN",
     "maxBytes": 1048576,
@@ -119,37 +106,22 @@ Here's an example `config.json` file with rules:
   },
   "rules": [
     {
-      "py/object": "configuration.rule.Rule",
       "processSelector": "example.exe",
-      "priority": {
-        "py/object": "psutil._pswindows.Priority",
-        "value": "High"
-      },
-      "ioPriority": {
-        "py/object": "psutil._pswindows.IOPriority",
-        "value": "Normal"
-      },
+      "priority": "High",
+      "ioPriority": "Normal",
       "affinity": "1;3-5"
     },
     {
-      "py/object": "configuration.rule.Rule",
       "serviceSelector": "Audio*",
-      "priority": {
-        "py/object": "psutil._pswindows.Priority",
-        "value": "Realtime"
-      },
-      "ioPriority": {
-        "py/object": "psutil._pswindows.IOPriority",
-        "value": "High"
-      },
+      "priority": "Realtime",
+      "ioPriority": "High",
       "affinity": "0;2;4"
     }
   ]
 }
 ```
 
-In this example, two rules are defined—one for a process and one for a service. Service rules take precedence over
-process rules if a match is found for a service.
+In this example, two rules are defined—one for a process and one for a service.
 
 ### License
 

@@ -90,7 +90,7 @@ class RulesService(ABC):
                 logging.warning(f"No such process: {pid}")
 
     @classmethod
-    def __set_ionice(cls, not_success, process_info, rule):
+    def __set_ionice(cls, not_success, process_info, rule: Rule):
         if not rule.ioPriority or process_info.ionice == rule.ioPriority:
             return
 
@@ -103,7 +103,7 @@ class RulesService(ABC):
             not_success.append(parameter)
 
     @classmethod
-    def __set_nice(cls, not_success, process_info, rule):
+    def __set_nice(cls, not_success, process_info, rule: Rule):
         if not rule.priority or process_info.nice == rule.priority:
             return
 
@@ -116,8 +116,8 @@ class RulesService(ABC):
             not_success.append(parameter)
 
     @classmethod
-    def __set_affinity(cls, not_success, process_info, rule):
-        if not rule.affinity:
+    def __set_affinity(cls, not_success, process_info, rule: Rule):
+        if rule.affinity is None:
             return
 
         parameter = _ProcessParameter.AFFINITY

@@ -1,15 +1,13 @@
-from dataclasses import dataclass
 from typing import Optional
 
-from psutil._pswindows import Priority, IOPriority
+from pydantic import BaseModel, Field
 
-from configuration.handler.io_priority import IoPriorityHandler
-from configuration.handler.priority import PriorityHandler
+from configuration.handler.io_priority import IOPriorityStr
+from configuration.handler.priority import PriorityStr
 from util.utils import parse_affinity
 
 
-@dataclass
-class Rule:
+class Rule(BaseModel):
     """
     The Rule class defines a rule for configuring process and service behavior in Process Governor.
 
@@ -17,27 +15,27 @@ class Rule:
     I/O priority, and CPU core affinity.
     """
 
-    serviceSelector: Optional[str] = None
+    serviceSelector: Optional[str] = Field(default=None)
     """
     A string specifying the name or pattern of the service to which this rule applies. Default is None.
     """
 
-    processSelector: Optional[str] = None
+    processSelector: Optional[str] = Field(default=None)
     """
     A string specifying the name or pattern of the process to which this rule applies. Default is None.
     """
 
-    priority: Optional[Priority] = None
+    priority: Optional[PriorityStr] = Field(default=None)
     """
     The priority level to set for the process or service. Default is None (no priority specified).
     """
 
-    ioPriority: Optional[IOPriority] = None
+    ioPriority: Optional[IOPriorityStr] = Field(default=None)
     """
     The I/O priority to set for the process or service. Default is None (no I/O priority specified).
     """
 
-    affinity: Optional[str] = None
+    affinity: Optional[str] = Field(default=None)
     """
     A string specifying the CPU core affinity for the process or service. Default is None (no affinity specified).
     """
@@ -50,7 +48,3 @@ class Rule:
         process or service should be bound.
         """
         return parse_affinity(self.affinity)
-
-
-PriorityHandler.handles(Priority)
-IoPriorityHandler.handles(IOPriority)

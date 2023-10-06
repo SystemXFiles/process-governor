@@ -6,6 +6,7 @@ from time import time
 from typing import Type, TypeVar, Callable, List, Optional
 
 import win32con
+from psutil import cpu_times
 from win32api import MessageBoxEx
 
 T = TypeVar('T')
@@ -88,20 +89,23 @@ def cached(timeout_in_seconds, logged=False) -> Callable[..., T]:
 
 
 @lru_cache
-def parse_affinity(in_affinity: str) -> List[int]:
+def parse_affinity(in_affinity: Optional[str]) -> Optional[List[int]]:
     """
     Parse a CPU core affinity string and return a list of core numbers.
 
     Args:
-        in_affinity (str): The CPU core affinity string to parse.
+        in_affinity (Optional[str]): The CPU core affinity string to parse.
 
     Returns:
-        List[int]: A list of CPU core numbers specified in the affinity string.
+        Optional[List[int]]: A list of CPU core numbers specified in the affinity string.
     """
+    if in_affinity is None:
+        return None
+
     affinity = in_affinity.strip()
 
     if not affinity:
-        return []
+        return list(range(len(cpu_times(percpu=True))))
 
     affinity = affinity.split(";")
     cores: List[int] = []

@@ -1,18 +1,13 @@
 from psutil._pswindows import Priority, IOPriority
 
-from configuration.config import Config
 from configuration.rule import Rule
 from service.config_service import ConfigService
 
 if __name__ == '__main__':
-    config = Config()
+    config = ConfigService.load_config()
 
     config.rules = [
         Rule(processSelector="aida_bench64.dll"),
-        Rule(
-            processSelector="logioptionsplus_*.exe",
-            priority=Priority.IDLE_PRIORITY_CLASS
-        ),
         Rule(
             processSelector="cc_engine_x64.exe",
             priority=Priority.IDLE_PRIORITY_CLASS
@@ -67,7 +62,7 @@ if __name__ == '__main__':
             serviceSelector="*audio*",
             priority=Priority.REALTIME_PRIORITY_CLASS,
             ioPriority=IOPriority.IOPRIO_HIGH,
-            affinity="16-23"
+            affinity=""
         ),
         Rule(processSelector="*", affinity="0-15")
     ]

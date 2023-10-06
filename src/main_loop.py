@@ -20,13 +20,16 @@ from service.rules_service import RulesService
 from util.utils import yesno_error_box
 
 
-def log_setup(config: Config):
+def log_setup():
     """
-    Configure logging based on the provided configuration.
+    Sets up the logging configuration.
 
-    Args:
-        config (Config): The configuration object containing logging settings.
+    Retrieves the logging configuration from the `ConfigService` and sets up the logging handlers and formatters
+    accordingly. If the logging configuration is disabled, the function does nothing.
     """
+
+    config: Config = ConfigService.load_config()
+
     if not config.logging.enable:
         return
 
@@ -66,17 +69,16 @@ def priority_setup():
         pass
 
 
-def init_tray(config: Config) -> Icon:
+def init_tray() -> Icon:
     """
-    Display the system tray icon and menu, allowing the user to gracefully exit the application.
-
-    This function creates a system tray icon with a "Quit" menu option, which allows the user to quit the
-    Process Governor application gracefully.
+    Initializes and returns a system tray icon.
 
     Returns:
-        Icon: The system tray icon object.
+        Icon: The system tray icon.
     """
-    menu: tuple[MenuItem] = (
+
+    config: Config = ConfigService.load_config()
+    menu: tuple[MenuItem, ...] = (
         MenuItem('Open JSON config', lambda ico: os.startfile(CONFIG_FILE_NAME)),
         MenuItem('Open log file', lambda ico: os.startfile(config.logging.filename)),
         MenuItem('Quit', lambda ico: ico.stop()),
@@ -88,21 +90,24 @@ def init_tray(config: Config) -> Icon:
     return icon
 
 
-def main_loop(config: Config, tray: Icon):
+def main_loop(tray: Icon):
     """
-    Main application loop for applying rules at regular intervals and managing the system tray icon.
+    Main application loop for applying rules at regular intervals, updating the configuration, and managing the system tray icon.
 
     Args:
-        config (Config): The configuration object containing rule application settings.
         tray (Icon): The system tray icon instance to be managed within the loop. It will be stopped gracefully
             when the loop exits.
     """
+
+    config: Config = ConfigService.load_config()
+
     try:
         thread = Thread(target=tray.run)
         thread.start()
 
         while thread.is_alive():
             RulesService.apply_rules(config)
+            config = ConfigService.load_config()
             sleep(config.ruleApplyIntervalSeconds)
     except KeyboardInterrupt:
         pass
@@ -129,9 +134,8 @@ def start_app():
 
     This function loads the configuration, sets up logging and process priorities, and starts the main application loop.
     """
-    config = ConfigService.load_config()
-    log_setup(config)
+    log_setup()
     priority_setup()
 
-    tray: Icon = init_tray(config)
-    main_loop(config, tray)
+    tray: Icon = init_tray()
+    main_loop(tray)

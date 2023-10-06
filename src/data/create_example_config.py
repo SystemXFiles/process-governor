@@ -1,11 +1,10 @@
 from psutil._pswindows import Priority, IOPriority
 
-from configuration.config import Config
 from configuration.rule import Rule
 from service.config_service import ConfigService
 
 if __name__ == '__main__':
-    config = Config()
+    config = ConfigService.load_config()
 
     config.rules = [
         Rule(
