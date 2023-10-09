@@ -9,6 +9,10 @@ if __name__ == '__main__':
     config.rules = [
         Rule(processSelector="aida_bench64.dll"),
         Rule(
+            processSelector="logioptionsplus_*.exe",
+            priority=Priority.IDLE_PRIORITY_CLASS
+        ),
+        Rule(
             processSelector="cc_engine_x64.exe",
             priority=Priority.IDLE_PRIORITY_CLASS
         ),
