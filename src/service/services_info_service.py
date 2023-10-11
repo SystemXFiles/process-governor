@@ -1,8 +1,9 @@
+import logging
 from abc import ABC
 from typing import Optional
 
 import psutil
-from psutil import STATUS_STOPPED
+from psutil import STATUS_STOPPED, NoSuchProcess
 from psutil._pswindows import WindowsService
 
 from model.service import Service
@@ -30,19 +31,22 @@ class ServicesInfoService(ABC):
         result: dict[int, Service] = {}
 
         for service in psutil.win_service_iter():
-            info = service.as_dict()
+            try:
+                info = service.as_dict()
 
-            if info['status'] == STATUS_STOPPED:
-                continue
+                if info['status'] == STATUS_STOPPED:
+                    continue
 
-            result[info['pid']] = Service(
-                info['pid'],
-                info['name'],
-                info['display_name'],
-                info['description'],
-                info['status'],
-                info['binpath']
-            )
+                result[info['pid']] = Service(
+                    info['pid'],
+                    info['name'],
+                    info['display_name'],
+                    info['description'],
+                    info['status'],
+                    info['binpath']
+                )
+            except NoSuchProcess as _:
+                logging.warning(f"No such service: {service.name}")
 
         return result
 
