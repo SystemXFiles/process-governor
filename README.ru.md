@@ -1,4 +1,4 @@
-![Logo Process Governor](docs/github-banner-readme.png)
+![Logo Process Governor](docs/images/github-banner-readme.png)
 
 ---
 
@@ -27,7 +27,11 @@ JSON-конфигурации.
 
 Программу можно закрыть, обратившись к значку в системном трее:
 
-![Tray menu screenshot](docs/tray_menu_screenshot.png)
+![Tray menu screenshot](docs/images/tray_menu_screenshot.png)
+
+## Советы и трюки
+
+1. [Оптимизация Starfield](docs/tips'n'tricks/starfield.md) - Устранение лагов с помощью Process Governor.
 
 ---
 

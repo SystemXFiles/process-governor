@@ -1,4 +1,4 @@
-![Logo Process Governor](docs/github-banner-readme.png)
+![Logo Process Governor](docs/images/github-banner-readme.png)
 
 ---
 
@@ -25,7 +25,11 @@ This is important to allow the program to make the necessary adjustments to proc
 
 You can close the program by accessing the tray icon:
 
-![Tray menu screenshot](docs/tray_menu_screenshot.png)
+![Tray menu screenshot](docs/images/tray_menu_screenshot.png)
+
+## Tips and Tricks
+
+1. [Starfield Optimization](docs/tips'n'tricks/starfield.md) - Eliminating Stutters with Process Governor.
 
 ---
 
