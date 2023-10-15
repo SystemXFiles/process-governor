@@ -7,14 +7,14 @@ priorities, I/O priorities, and core affinity based on user-defined rules in a J
 
 [Russian README / Русская версия](README.ru.md)
 
----
-
 ## Features
 
 - Adjust process and service priorities for better performance.
 - Control I/O priorities to optimize resource utilization.
 - Define core affinity for processes.
 - Fine-tune Windows services and processes based on user-defined rules in the `config.json` file.
+
+---
 
 ## Getting Started
 
