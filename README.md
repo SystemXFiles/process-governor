@@ -14,8 +14,6 @@ priorities, I/O priorities, and core affinity based on user-defined rules in a J
 - Define core affinity for processes.
 - Fine-tune Windows services and processes based on [user-defined rules](#configuration-format) in the `config.json` file.
 
----
-
 ## Getting Started
 
 To get started with **Process Governor**, follow these steps:
@@ -28,6 +26,8 @@ This is important to allow the program to make the necessary adjustments to proc
 You can close the program by accessing the tray icon:
 
 ![Tray menu screenshot](docs/tray_menu_screenshot.png)
+
+---
 
 ## Running from source code
 
