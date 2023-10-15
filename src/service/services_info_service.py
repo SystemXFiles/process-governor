@@ -1,4 +1,3 @@
-import logging
 from abc import ABC
 from typing import Optional
 
@@ -7,6 +6,7 @@ from psutil import STATUS_STOPPED, NoSuchProcess
 from psutil._pswindows import WindowsService
 
 from model.service import Service
+from util.logs import log
 from util.utils import suppress_exception
 
 # фикс бага psutil
@@ -46,7 +46,7 @@ class ServicesInfoService(ABC):
                     info['binpath']
                 )
             except NoSuchProcess as _:
-                logging.warning(f"No such service: {service.name}")
+                log.warning(f"No such service: {service.name}")
 
         return result
 

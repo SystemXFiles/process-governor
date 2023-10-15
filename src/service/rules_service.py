@@ -1,4 +1,3 @@
-import logging
 import os
 from abc import ABC
 from enum import Enum
@@ -14,6 +13,7 @@ from model.process import Process
 from model.service import Service
 from service.processes_info_service import ProcessesInfoService
 from service.services_info_service import ServicesInfoService
+from util.logs import log
 from util.utils import fnmatch_cached, cached
 
 
@@ -82,12 +82,12 @@ class RulesService(ABC):
                 if not_success:
                     cls.__ignore_process_parameter(tuple_pid_name, set(not_success))
 
-                    logging.warning(f"Set failed [{', '.join(map(str, not_success))}] "
+                    log.warning(f"Set failed [{', '.join(map(str, not_success))}] "
                                     f"for {process_info.name} ({process_info.pid}"
                                     f"{', ' + service_info.name + '' if service_info else ''}"
                                     f")")
             except NoSuchProcess as _:
-                logging.warning(f"No such process: {pid}")
+                log.warning(f"No such process: {pid}")
 
     @classmethod
     def __set_ionice(cls, not_success, process_info, rule: Rule):
@@ -98,7 +98,7 @@ class RulesService(ABC):
 
         try:
             process_info.process.ionice(rule.ioPriority)
-            logging.info(f"Set {parameter.value} = {rule.ioPriority} for {process_info.name} ({process_info.pid})")
+            log.info(f"Set {parameter.value} = {rule.ioPriority} for {process_info.name} ({process_info.pid})")
         except AccessDenied as _:
             not_success.append(parameter)
 
@@ -111,7 +111,7 @@ class RulesService(ABC):
 
         try:
             process_info.process.nice(rule.priority)
-            logging.info(f"Set {parameter.value} = {rule.priority} for {process_info.name} ({process_info.pid})")
+            log.info(f"Set {parameter.value} = {rule.priority} for {process_info.name} ({process_info.pid})")
         except AccessDenied as _:
             not_success.append(parameter)
 
@@ -128,7 +128,7 @@ class RulesService(ABC):
 
         try:
             process_info.process.cpu_affinity(affinity_as_list)
-            logging.info(f"Set {parameter.value} = {rule.affinity} for {process_info.name} ({process_info.pid})")
+            log.info(f"Set {parameter.value} = {rule.affinity} for {process_info.name} ({process_info.pid})")
         except AccessDenied as _:
             not_success.append(parameter)
 

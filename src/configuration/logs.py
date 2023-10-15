@@ -22,7 +22,7 @@ class Logs(BaseModel):
     The name of the log file where log messages will be written. Default is 'logging.txt'.
     """
 
-    level: Literal['CRITICAL', 'FATAL', 'ERROR', 'WARNING', 'WARN', 'INFO', 'DEBUG', 'NOTSET'] = Field(default='WARN')
+    level: Literal['CRITICAL', 'FATAL', 'ERROR', 'WARNING', 'WARN', 'INFO', 'DEBUG', 'NOTSET'] = Field(default='INFO')
     """
     The log level for filtering log messages. Default is 'WARN'.
     Valid log levels include: 'CRITICAL', 'FATAL', 'ERROR', 'WARNING', 'WARN', 'INFO', 'DEBUG', 'NOTSET'.

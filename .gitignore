@@ -163,7 +163,7 @@ cython_debug/
 /downloads_for_van/
 /dist/
 /config.json
-/src/data/config.json
+/config/config.json
 /logging.txt
 
 /pg.lock

@@ -1,10 +1,8 @@
-import logging
 import os
-import sys
-from logging import StreamHandler
-from logging.handlers import RotatingFileHandler
+import traceback
 from threading import Thread
 from time import sleep
+from typing import Optional
 
 import psutil
 import pystray
@@ -17,42 +15,8 @@ from configuration.config import Config
 from resource.resource import get_tray_icon
 from service.config_service import ConfigService, CONFIG_FILE_NAME
 from service.rules_service import RulesService
-from util.utils import yesno_error_box
-
-
-def log_setup():
-    """
-    Sets up the logging configuration.
-
-    Retrieves the logging configuration from the `ConfigService` and sets up the logging handlers and formatters
-    accordingly. If the logging configuration is disabled, the function does nothing.
-    """
-
-    config: Config = ConfigService.load_config()
-
-    if not config.logging.enable:
-        return
-
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    level = config.logging.level_as_int()
-
-    handler = RotatingFileHandler(
-        config.logging.filename,
-        maxBytes=config.logging.maxBytes,
-        backupCount=config.logging.backupCount,
-        encoding='utf-8',
-    )
-    handler.setLevel(level)
-    handler.setFormatter(formatter)
-
-    stream_handler = StreamHandler(sys.stdout)
-    stream_handler.setLevel(level)
-    stream_handler.setFormatter(formatter)
-
-    logger = logging.getLogger()
-    logger.setLevel(level)
-    logger.addHandler(handler)
-    logger.addHandler(stream_handler)
+from util.logs import log_setup, log
+from util.messages import message_box, yesno_error_box, MBIcon, show_error
 
 
 def priority_setup():
@@ -100,32 +64,17 @@ def main_loop(tray: Icon):
     """
 
     config: Config = ConfigService.load_config()
+    thread = Thread(target=tray.run)
+    thread.start()
 
-    try:
-        thread = Thread(target=tray.run)
-        thread.start()
+    log.info('Application started')
 
-        while thread.is_alive():
-            RulesService.apply_rules(config)
-            config = ConfigService.load_config()
-            sleep(config.ruleApplyIntervalSeconds)
-    except KeyboardInterrupt:
-        pass
-    except BaseException as e:
-        logging.exception(e)
+    while thread.is_alive():
+        RulesService.apply_rules(config)
+        config = ConfigService.load_config()
+        sleep(config.ruleApplyIntervalSeconds)
 
-        message = (
-            f"An error has occurred in the Process Governor application. To troubleshoot, please check the log "
-            f"file: {config.logging.filename} for details.\n\nWould you like to open the log file?"
-        )
-        title = "Process Governor - Error Detected"
-
-        if yesno_error_box(title, message):
-            os.startfile(config.logging.filename)
-
-        raise e
-    finally:
-        tray.stop()
+    log.info('The application has stopped')
 
 
 def start_app():
@@ -134,8 +83,39 @@ def start_app():
 
     This function loads the configuration, sets up logging and process priorities, and starts the main application loop.
     """
-    log_setup()
-    priority_setup()
+    tray: Optional[Icon] = None
 
-    tray: Icon = init_tray()
-    main_loop(tray)
+    try:
+        log_setup()
+        priority_setup()
+
+        tray: Icon = init_tray()
+        main_loop(tray)
+    except KeyboardInterrupt:
+        pass
+    except BaseException as e:
+        log.exception(e)
+
+        config: Optional[Config] = None
+
+        try:
+            config = ConfigService.load_config()
+        except:
+            pass
+
+        title = "Process Governor - Error Detected"
+
+        if config:
+            message = (
+                f"An error has occurred in the Process Governor application. To troubleshoot, please check the log "
+                f"file: {config.logging.filename} for details.\n\nWould you like to open the log file?"
+            )
+
+            if yesno_error_box(title, message):
+                os.startfile(config.logging.filename)
+        else:
+            message = f"An error has occurred in the Process Governor application.\n\n" + traceback.format_exc()
+            show_error(title, message)
+    finally:
+        if tray:
+            tray.stop()

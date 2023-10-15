@@ -1,14 +1,11 @@
-import sys, os
-if sys.executable.endswith('pythonw.exe'):
-    sys.stdout = open(os.devnull, 'w')
-    sys.stderr = open(os.path.join(os.getenv('TEMP'), 'stderr-{}'.format(os.path.basename(sys.argv[0]))), "w")
-    
 import platform
+import sys
+
 import pyuac
-from util import pyuac_fix
-from util.lock_instance import create_lock_file, remove_lock_file
 
 from main_loop import start_app
+from util.lock_instance import create_lock_file, remove_lock_file
+from util.messages import message_box, MBIcon
 
 if __name__ == "__main__":
     if not platform.system() == "Windows":
@@ -16,10 +13,16 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if not pyuac.isUserAdmin():
-        pyuac_fix.runAsAdmin(wait=False, showCmd=False)
-    else:
-        create_lock_file()
-        try:
-            start_app()
-        finally:
-            remove_lock_file()
+        message_box(
+            "Process Governor",
+            "This program requires administrator privileges to run.\n"
+            "Please run the program as an administrator to ensure proper functionality.",
+            MBIcon.INFORMATION
+        )
+        sys.exit(1)
+
+    create_lock_file()
+    try:
+        start_app()
+    finally:
+        remove_lock_file()
