@@ -1,4 +1,4 @@
-![Logo Process Governor](docs/images/github-banner-readme.png)
+![Logo Process Governor](images/github-banner-readme.png)
 
 ---
 
@@ -6,7 +6,7 @@
 настройки их приоритетов, приоритетов ввода/вывода и привязки к ядрам на основе пользовательских правил, заданных в
 JSON-конфигурации.
 
-[English README](README.md)
+[English README](../README.md)
 
 ## Возможности
 
@@ -27,7 +27,7 @@ JSON-конфигурации.
 
 Программу можно закрыть, обратившись к значку в системном трее:
 
-![Tray menu screenshot](docs/images/tray_menu_screenshot.png)
+![Tray menu screenshot](images/tray_menu_screenshot.png)
 
 ## Советы и трюки
 

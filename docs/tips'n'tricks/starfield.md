@@ -14,7 +14,7 @@ To commence using Process Governor, run the `Process Governor.exe` application w
 
 ### Tip 3: Configure Rules for the Starfield Process
 
-Open the `config.json` file, which is generated automatically, and insert the following rule to prevent the Starfield game from utilizing the first processor core:
+Open the `config.json` file, which is automatically generated, and add the following rule to the `rules` section to prevent the Starfield game from utilizing the first processor core:
 
 ```json
 {
@@ -24,6 +24,8 @@ Open the `config.json` file, which is generated automatically, and insert the fo
 ```
 
 Replace "N" with the highest available core/thread number on your processor, beginning from 0.
+
+You can find a detailed description of the section with rules in the configuration [here](../../README.md#configuration-format).
 
 ### Tip 4: Automatic Configuration Update
 
