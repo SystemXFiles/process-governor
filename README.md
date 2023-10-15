@@ -12,22 +12,31 @@ priorities, I/O priorities, and core affinity based on user-defined rules in a J
 - Adjust process and service priorities for better performance.
 - Control I/O priorities to optimize resource utilization.
 - Define core affinity for processes.
-- Fine-tune Windows services and processes based on user-defined rules in the `config.json` file.
+- Fine-tune Windows services and processes based on [user-defined rules](#configuration-format) in the `config.json` file.
 
 ---
 
 ## Getting Started
 
-To use Process Governor, follow these steps:
+To get started with **Process Governor**, follow these steps:
 
-1. Clone this repository.
-2. Install the required dependencies using `pip`: `pip install -r requirements.txt`
-3. Configure your rules in the `config.json` file. You can create the `config.json` file by running the program once.
-4. Run the `process-governor.py` script with **administrative privileges**: `python process-governor.py`
+1. Download the latest ready-to-use build from the following link: [Latest Release](https://github.com/SystemXFiles/process-governor/releases/latest).
+2. [Configure your rules](#configuration-format) in the `config.json` file. You can create the `config.json` file by running the program once.
+3. Run the `Process Governor.exe` executable with **administrative privileges**. 
+This is important to allow the program to make the necessary adjustments to process and service priorities, I/O priorities, and core affinity.
 
 You can close the program by accessing the tray icon:
 
 ![Tray menu screenshot](docs/tray_menu_screenshot.png)
+
+## Running from source code
+
+To run **Process Governor** from source code, follow these steps:
+
+1. Clone this repository.
+2. Install the required dependencies using `pip`: `pip install -r requirements.txt`
+3. [Configure your rules](#configuration-format) in the `config.json` file. You can create the `config.json` file by running the program once.
+4. Run the `process-governor.py` script with **administrative privileges**: `python process-governor.py`
 
 ## Creating a Portable Build
 
@@ -43,14 +52,9 @@ Now you have a portable version of the program that you can use without installa
 
 ## Configuration Format
 
-The configuration file for Process Governor is in JSON format. Below, we describe the structure and available parameters
-within the `config.json` file.
-
-#### Rule Evaluation
-
-- Process rules are evaluated in the order they appear in the configuration file.
-- Service rules take precedence over process rules if a match is found for a service. Once a matching service rule is
-  applied, further evaluation of process rules for the same process is ignored.
+The configuration file for Process Governor is in JSON format and is named `config.json`. 
+If the configuration file is missing, run the program once, and it will be created automatically. 
+Below, we provide an overview of the file's structure and the available parameters.
 
 ### `rules` Section
 
