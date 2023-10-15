@@ -31,7 +31,7 @@ JSON-конфигурации.
 
 ## Советы и трюки
 
-1. [Оптимизация Starfield](docs/tips'n'tricks/starfield.md) - Устранение лагов с помощью Process Governor.
+1. [Оптимизация Starfield](tips'n'tricks/starfield.md) - Устранение лагов с помощью Process Governor.
 
 ---
 
