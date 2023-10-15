@@ -1,11 +1,13 @@
-# Process Governor
+![Logo Process Governor](docs/github-banner-readme.png)
 
-![Logo Process Governor](resources/app.ico)
+---
 
 **Process Governor** is a Python utility designed to manage Windows processes and services by adjusting their
 priorities, I/O priorities, and core affinity based on user-defined rules in a JSON configuration.
 
 [Russian README / Русская версия](README.ru.md)
+
+---
 
 ## Features
 
@@ -36,6 +38,8 @@ You can create a portable version of the program using **PyInstaller**. Follow t
 3. After the script completes, you will find the portable build in the `dist` folder.
 
 Now you have a portable version of the program that you can use without installation.
+
+---
 
 ## Configuration Format
 
@@ -122,6 +126,8 @@ Here's an example `config.json` file with rules:
 ```
 
 In this example, two rules are defined—one for a process and one for a service.
+
+---
 
 ### License
 
