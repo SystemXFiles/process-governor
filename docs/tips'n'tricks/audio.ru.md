@@ -160,46 +160,7 @@ Governor:
 }
 ```
 
-Нас прежде всего интересует эта часть:
-
-```json
-{
-  "rules": [
-    {
-      "processSelector": "voicemeeter8x64.exe",
-      "priority": "Realtime",
-      "affinity": "16-23"
-    },
-    {
-      "processSelector": "voicemeeterclient.exe ",
-      "priority": "Realtime",
-      "affinity": "16-23"
-    },
-    {
-      "processSelector": "element.exe",
-      "priority": "Realtime",
-      "affinity": "16-23"
-    },
-    {
-      "processSelector": "Audiodg.exe",
-      "priority": "Realtime",
-      "affinity": "16-23"
-    },
-    {
-      "serviceSelector": "AudioSrv",
-      "priority": "Realtime"
-    },
-    {
-      "serviceSelector": "AudioEndpointBuilder",
-      "priority": "Realtime"
-    },
-    {
-      "processSelector": "*",
-      "affinity": "0-15"
-    }
-  ]
-}
-```
+Нас прежде всего интересует секция `rules`.
 
 **Обратите внимание**:
 

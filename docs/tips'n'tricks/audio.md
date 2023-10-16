@@ -156,48 +156,9 @@ for Process Governor:
 }
 ```
 
-First and foremost, we are interested in this part:
+First and foremost, we are interested section `rules`.
 
-```json
-{
-  "rules": [
-    {
-      "processSelector": "voicemeeter8x64.exe",
-      "priority": "Realtime",
-      "affinity": "16-23"
-    },
-    {
-      "processSelector": "voicemeeterclient.exe ",
-      "priority": "Realtime",
-      "affinity": "16-23"
-    },
-    {
-      "processSelector": "element.exe",
-      "priority": "Realtime",
-      "affinity": "16-23"
-    },
-    {
-      "processSelector": "Audiodg.exe",
-      "priority": "Realtime",
-      "affinity": "16-23"
-    },
-    {
-      "serviceSelector": "AudioSrv",
-      "priority": "Realtime"
-    },
-    {
-      "serviceSelector": "AudioEndpointBuilder",
-      "priority": "Realtime"
-    },
-    {
-      "processSelector": "*",
-      "affinity": "0-15"
-    }
-  ]
-}
-```
-
-The key aspects to note are as follows:
+**The key aspects to note are as follows:**
 
 - Processes and services responsible for audio are specified in the `serviceSelector` and `processSelector`.
 - The "real-time" priority is set for all audio-related processes: `"priority": "Realtime"`.
