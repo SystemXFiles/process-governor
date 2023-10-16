@@ -1,12 +1,12 @@
 ![Logo Process Governor](images/github-banner-readme.png)
 
+[English version](../README.md)
+
 ---
 
 **Process Governor** - это утилита на Python, предназначенная для управления процессами и службами в Windows путем
 настройки их приоритетов, приоритетов ввода/вывода и привязки к ядрам на основе пользовательских правил, заданных в
 JSON-конфигурации.
-
-[English README](../README.md)
 
 ## Возможности
 
@@ -31,7 +31,8 @@ JSON-конфигурации.
 
 ## Советы и трюки
 
-1. [Оптимизация Starfield](tips'n'tricks/starfield.md) - Устранение лагов с помощью Process Governor.
+1. [Оптимизация звука на ПК](tips'n'tricks/audio.ru.md)
+2. [Оптимизация Starfield: Уменьшение лагов](tips'n'tricks/starfield.ru.md)
 
 ---
 
