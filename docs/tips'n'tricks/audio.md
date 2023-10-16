@@ -11,6 +11,8 @@
 In this article, we will explore the process of optimizing audio on a computer using the **Process Governor** tool. This
 method allows for improved audio stability and reduced stuttering and crackling, especially during high processor loads.
 
+---
+
 ### Background of the Issue
 
 #### Initial Situation
@@ -42,6 +44,8 @@ born. This gave rise to Process Governor. With its help, I could optimize audio 
 to run with high priority in real-time mode and assigning them to specific CPU cores. This ensured stable and
 high-quality audio playback even in demanding scenarios.
 
+---
+
 ### Processes and Services Affecting Audio
 
 To process audio, I use the following programs:
@@ -56,6 +60,8 @@ Additionally, there are Windows services and processes that interact with audio 
 1. **AudioSrv** service.
 2. **AudioEndpointBuilder** service.
 3. **Audiodg.exe** process.
+
+---
 
 ### Preparing for Configuration
 
@@ -92,6 +98,8 @@ I also recommend setting the maximum priority - real-time - for all processes re
 >
 > Leads to worsening audio issues. Therefore, for these services, I only change the priority and leave the core affinity
 > untouched.
+
+---
 
 ### Configuring Process Governor
 
@@ -208,6 +216,8 @@ Also, pay attention to the last rule and its `processSelector`:
 Here, the selector is `*`, indicating that ANY process will be subject to the rule specifying threads 0-15. Since rules
 in Process Governor are executed in order until the first match is found, this rule will only apply to processes not
 related to audio, automatically assigning them to threads 0-15.
+
+---
 
 ### Running Process Governor
 
