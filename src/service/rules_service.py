@@ -8,6 +8,8 @@ from psutil import AccessDenied, NoSuchProcess
 from pyuac import isUserAdmin
 
 from configuration.config import Config
+from configuration.handler.io_priority import iopriority_to_str
+from configuration.handler.priority import priority_to_str
 from configuration.rule import Rule
 from model.process import Process
 from model.service import Service
@@ -36,20 +38,30 @@ class RulesService(ABC):
     __ignored_process_parameters: dict[tuple[int, str], set[_ProcessParameter]] = {}
 
     @classmethod
-    def apply_rules(cls, config: Config):
+    def apply_rules(cls, config: Config, force=False):
         """
-        Apply rules from the provided configuration to processes and services.
+        Apply the rules defined in the configuration to handle processes and services.
 
         Args:
-            config (Config): The configuration object containing the rules to be applied.
+            config (Config): The configuration object containing the rules.
+            force (bool, optional): If set to True, all processes will be fetched,
+                                    regardless of their status. Defaults to False.
+
+        Returns:
+            None
         """
         if not config.rules:
             return
 
         cls.__light_gc_ignored_process_parameters()
 
-        processes: dict[int, Process] = ProcessesInfoService.get_new_processes()
         services: dict[int, Service] = ServicesInfoService.get_list()
+        processes: dict[int, Process]
+
+        if force:
+            processes = ProcessesInfoService.get_list()
+        else:
+            processes = ProcessesInfoService.get_new_processes()
 
         cls.__handle_processes(config, processes, services)
 
@@ -83,9 +95,9 @@ class RulesService(ABC):
                     cls.__ignore_process_parameter(tuple_pid_name, set(not_success))
 
                     log.warning(f"Set failed [{', '.join(map(str, not_success))}] "
-                                    f"for {process_info.name} ({process_info.pid}"
-                                    f"{', ' + service_info.name + '' if service_info else ''}"
-                                    f")")
+                                f"for {process_info.name} ({process_info.pid}"
+                                f"{', ' + service_info.name + '' if service_info else ''}"
+                                f")")
             except NoSuchProcess as _:
                 log.warning(f"No such process: {pid}")
 
@@ -98,7 +110,8 @@ class RulesService(ABC):
 
         try:
             process_info.process.ionice(rule.ioPriority)
-            log.info(f"Set {parameter.value} = {rule.ioPriority} for {process_info.name} ({process_info.pid})")
+            log.info(
+                f"Set {parameter.value} {iopriority_to_str(rule.ioPriority)} for {process_info.name} ({process_info.pid})")
         except AccessDenied as _:
             not_success.append(parameter)
 
@@ -111,7 +124,8 @@ class RulesService(ABC):
 
         try:
             process_info.process.nice(rule.priority)
-            log.info(f"Set {parameter.value} = {rule.priority} for {process_info.name} ({process_info.pid})")
+            log.info(
+                f"Set {parameter.value} {priority_to_str(rule.priority)} for {process_info.name} ({process_info.pid})")
         except AccessDenied as _:
             not_success.append(parameter)
 
@@ -128,7 +142,7 @@ class RulesService(ABC):
 
         try:
             process_info.process.cpu_affinity(affinity_as_list)
-            log.info(f"Set {parameter.value} = {rule.affinity} for {process_info.name} ({process_info.pid})")
+            log.info(f"Set {parameter.value} {rule.affinity} for {process_info.name} ({process_info.pid})")
         except AccessDenied as _:
             not_success.append(parameter)
 

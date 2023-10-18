@@ -73,3 +73,15 @@ def show_error(title, message):
         message (str): The message to display in the error message box.
     """
     message_box(title, message, MBIcon.ERROR, MBButton.OK)
+
+
+def show_info(title, message):
+    """
+    Show an info message box with the given title and message.
+
+    Parameters:
+        title (str): The title of the error message box.
+        message (str): The message to display in the error message box.
+    """
+    message_box(title, message, MBIcon.INFORMATION, MBButton.OK)
+

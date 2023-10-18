@@ -21,7 +21,7 @@ __str_to_priority_mapping = {
 }
 
 
-def to_enum(value):
+def __to_enum(value):
     if isinstance(value, Priority):
         return value
     return __str_to_priority_mapping.get(value)
@@ -29,7 +29,21 @@ def to_enum(value):
 
 PriorityStr = Annotated[
     Priority,
-    BeforeValidator(to_enum),
+    BeforeValidator(__to_enum),
     PlainSerializer(lambda value: __priority_to_str_mapping.get(value), return_type=str),
     WithJsonSchema({'type': 'string'}, mode='serialization'),
 ]
+
+
+def priority_to_str(value: Priority):
+    """
+    Convert a priority value to its corresponding string representation.
+
+    Args:
+        value (int): The priority value to convert.
+
+    Returns:
+        str: The string representation of the priority value, or None if no
+            mapping is found.
+    """
+    return __priority_to_str_mapping.get(value)

@@ -1,4 +1,5 @@
 import os
+import sys
 import traceback
 from threading import Thread
 from time import sleep
@@ -8,15 +9,16 @@ import psutil
 import pystray
 from PIL import Image
 from psutil._pswindows import Priority, IOPriority
-from pystray import MenuItem
+from pystray import MenuItem, Menu
 from pystray._win32 import Icon
 
 from configuration.config import Config
-from resource.resource import get_tray_icon
 from service.config_service import ConfigService, CONFIG_FILE_NAME
 from service.rules_service import RulesService
 from util.logs import log_setup, log
-from util.messages import message_box, yesno_error_box, MBIcon, show_error
+from util.messages import yesno_error_box, show_error
+from util.path import get_tray_icon
+from util.startup import is_startup, toggle_startup
 
 
 def priority_setup():
@@ -40,18 +42,23 @@ def init_tray() -> Icon:
     Returns:
         Icon: The system tray icon.
     """
-
+    image: Image = Image.open(get_tray_icon())
     config: Config = ConfigService.load_config()
+
     menu: tuple[MenuItem, ...] = (
-        MenuItem('Open JSON config', lambda ico: os.startfile(CONFIG_FILE_NAME)),
-        MenuItem('Open log file', lambda ico: os.startfile(config.logging.filename)),
-        MenuItem('Quit', lambda ico: ico.stop()),
+        MenuItem('Open JSON config', lambda item: os.startfile(CONFIG_FILE_NAME), default=True),
+
+        Menu.SEPARATOR,
+
+        MenuItem('Run on Startup', lambda item: toggle_startup(), lambda item: is_startup(), visible=getattr(sys, 'frozen', False)),
+        MenuItem('Open log file', lambda item: os.startfile(config.logging.filename)),
+
+        Menu.SEPARATOR,
+
+        MenuItem('Quit', lambda item: item.stop()),
     )
 
-    image: Image = Image.open(get_tray_icon())
-    icon: Icon = pystray.Icon("tray_icon", image, "Process Governor", menu)
-
-    return icon
+    return pystray.Icon("tray_icon", image, "Process Governor", menu)
 
 
 def main_loop(tray: Icon):
@@ -62,16 +69,18 @@ def main_loop(tray: Icon):
         tray (Icon): The system tray icon instance to be managed within the loop. It will be stopped gracefully
             when the loop exits.
     """
-
-    config: Config = ConfigService.load_config()
     thread = Thread(target=tray.run)
     thread.start()
 
     log.info('Application started')
 
+    config: Optional[Config] = None
+    is_changed: bool
+
     while thread.is_alive():
-        RulesService.apply_rules(config)
-        config = ConfigService.load_config()
+        config, is_changed = ConfigService.reload_if_changed(config)
+
+        RulesService.apply_rules(config, is_changed)
         sleep(config.ruleApplyIntervalSeconds)
 
     log.info('The application has stopped')

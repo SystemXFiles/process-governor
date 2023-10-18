@@ -12,8 +12,8 @@ class ProcessesInfoService(ABC):
     It is an abstract base class (ABC) to be subclassed by specific implementation classes.
     """
 
-    @staticmethod
-    def get_list() -> dict[int, Process]:
+    @classmethod
+    def get_list(cls) -> dict[int, Process]:
         """
         Get a dictionary of running processes and their information.
 
@@ -22,16 +22,18 @@ class ProcessesInfoService(ABC):
             representing the running processes.
         """
         result: dict[int, Process] = {}
+        cls.__prev_pids = psutil.pids()
 
-        for process in psutil.process_iter():
+        for pid in cls.__prev_pids:
             try:
+                process = psutil.Process(pid)
                 info = process.as_dict(attrs=['name', 'exe', 'nice', 'ionice', 'cpu_affinity'])
-                result[process.pid] = Process(
-                    process.pid,
+                result[pid] = Process(
+                    pid,
                     info['exe'],
                     info['name'],
-                    info['nice'],
-                    info['ionice'],
+                    int(info['nice']) if info['nice'] else None,
+                    int(info['ionice']) if info['ionice'] else None,
                     info['cpu_affinity'],
                     process
                 )

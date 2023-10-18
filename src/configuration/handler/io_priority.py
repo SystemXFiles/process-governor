@@ -17,7 +17,7 @@ __str_to_iopriority_mapping = {
 }
 
 
-def to_enum(value):
+def __to_enum(value):
     if isinstance(value, IOPriority):
         return value
     return __str_to_iopriority_mapping.get(value)
@@ -25,7 +25,21 @@ def to_enum(value):
 
 IOPriorityStr = Annotated[
     IOPriority,
-    BeforeValidator(to_enum),
+    BeforeValidator(__to_enum),
     PlainSerializer(lambda value: __iopriority_to_str_mapping.get(value), return_type=str),
     WithJsonSchema({'type': 'string'}, mode='serialization'),
 ]
+
+
+def iopriority_to_str(value: IOPriority):
+    """
+    Convert a IO priority value to its corresponding string representation.
+
+    Args:
+        value (int): The IO priority value to convert.
+
+    Returns:
+        str: The string representation of the IO priority value, or None if no
+            mapping is found.
+    """
+    return __iopriority_to_str_mapping.get(value)
