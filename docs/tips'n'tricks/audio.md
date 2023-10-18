@@ -2,7 +2,7 @@
 
 ## Optimizing Audio on PC using Process Governor
 
-[README](../../README.md) | [Русская версия](audio.ru.md)
+[![EN](../icons/readme.png) README](../../README.md) | [![RU](../icons/ru.png) Русская версия](audio.ru.md)
 
 ---
 

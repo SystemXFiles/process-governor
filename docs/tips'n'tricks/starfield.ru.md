@@ -2,7 +2,7 @@
 
 ## Оптимизация Starfield: Уменьшение лагов с помощью Process Governor
 
-[README](../README.ru.md) | [English version](starfield.md)
+[![EN](../icons/readme.png) README](../README.ru.md) | [![EN](../icons/gb.png) English version](starfield.md)
 
 ---
 

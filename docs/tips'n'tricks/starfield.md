@@ -2,7 +2,7 @@
 
 ## Starfield Optimization: Reduce Stutters with Process Governor
 
-[README](../../README.md) | [Русская версия](starfield.ru.md)
+[![EN](../icons/readme.png) README](../../README.md) | [![RU](../icons/ru.png) Русская версия](starfield.ru.md)
 
 ---
 
