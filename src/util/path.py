@@ -31,3 +31,14 @@ def get_tray_icon() -> str:
         str: The path to the tray icon file.
     """
     return f"{get_root()}/resources/app.ico"
+
+
+def get_startup_script() -> str:
+    """
+    Returns the path to the startup script.
+
+    Returns:
+        str: The path to the startup script.
+    """
+    return f"{get_root()}/resources/startup.bat"
+

@@ -3,6 +3,8 @@ import sys
 
 import winshell
 
+from util.path import get_startup_script
+
 
 def startup_link_path():
     """
@@ -31,13 +33,11 @@ def create_startup_link():
         return
 
     with winshell.shortcut(link_path) as link:
-        link.path = f"\"{sys.executable}\""
+        link.path = f"\"{get_startup_script()}\""
         link.description = "Process Governor"
         link.icon_location = (sys.executable, 0)
         link.working_directory = os.getcwd()
-
-        if not getattr(sys, 'frozen', False):
-            link.arguments = f"\"{sys.argv[0]}\""
+        link.arguments = f"\"{sys.executable}\""
 
 
 def remove_startup_link():
