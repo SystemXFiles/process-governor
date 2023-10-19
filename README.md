@@ -15,7 +15,7 @@ priorities, I/O priorities, and core affinity based on user-defined rules in a J
 - Fine-tune Windows services and processes based on [user-defined rules](#configuration-format) in the `config.json`
   file.
 - Continuous monitoring of the configuration file for rule application.
-- The ability to add a program to autostart.
+- Ability to add ProcessGovernor to autorun.
 
 ## Getting Started
 
