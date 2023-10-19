@@ -174,9 +174,9 @@ Also, pay attention to the last rule and its `processSelector`:
 }
 ```
 
-Here, the selector is `*`, indicating that ANY process will be subject to the rule specifying threads 0-15. Since rules
+Here, the selector is `*`, indicating that ANY process will be subject to the rule specifying cores 0-15. Since rules
 in Process Governor are executed in order until the first match is found, this rule will only apply to processes not
-related to audio, automatically assigning them to threads 0-15.
+related to audio, automatically assigning them to cores 0-15.
 
 ---
 
