@@ -1,4 +1,5 @@
 import logging
+import sys
 from contextlib import suppress
 from fnmatch import fnmatch
 from functools import wraps, lru_cache
@@ -134,3 +135,10 @@ def fnmatch_cached(name: str, pattern: str) -> bool:
         bool: True if the name matches the pattern, False otherwise.
     """
     return pattern and fnmatch(name, pattern)
+
+
+def is_portable():
+    """
+    Check if the script is running in a portable environment.
+    """
+    return getattr(sys, 'frozen', False)

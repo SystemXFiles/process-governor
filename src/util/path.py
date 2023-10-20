@@ -1,6 +1,8 @@
 import os
 import sys
 
+from util.utils import is_portable
+
 
 def get_root():
     """
@@ -15,7 +17,7 @@ def get_root():
         If the application is not frozen, it retrieves the current working directory.
 
     """
-    if getattr(sys, 'frozen', False):
+    if is_portable():
         application_path = sys._MEIPASS
     else:
         application_path = os.getcwd()

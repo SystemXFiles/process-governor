@@ -4,35 +4,16 @@ import sys
 import winshell
 
 from util.path import get_startup_script
+from util.utils import is_portable
+
+__STARTUP_LINK_PATH = os.path.join(winshell.startup(), "Process Governor.lnk")
 
 
-def startup_link_path():
+def __create_startup_link():
     """
-    Returns the path to the startup link file for the "Process Governor" application.
-    The startup link file is located in the Windows startup folder.
-
-    :return: A string representing the path to the startup link file.
+    Creates a startup link for the application.
     """
-    return os.path.join(winshell.startup(), "Process Governor.lnk")
-
-
-def is_startup():
-    """
-    Check if the startup link path exists as a file.
-    """
-    return os.path.isfile(startup_link_path())
-
-
-def create_startup_link():
-    """
-    Create a shortcut in the Windows startup folder.
-    """
-    link_path = startup_link_path()
-
-    if os.path.isfile(link_path):
-        return
-
-    with winshell.shortcut(link_path) as link:
+    with winshell.shortcut(__STARTUP_LINK_PATH) as link:
         link.path = f"\"{get_startup_script()}\""
         link.description = "Process Governor"
         link.icon_location = (sys.executable, 0)
@@ -40,14 +21,29 @@ def create_startup_link():
         link.arguments = f"\"{sys.executable}\""
 
 
-def remove_startup_link():
+def is_in_startup():
+    """
+    Check if the startup link path exists as a file.
+    """
+    return os.path.isfile(__STARTUP_LINK_PATH)
+
+
+def add_to_startup():
+    """
+    Create a shortcut in the Windows startup folder.
+    """
+    if os.path.isfile(__STARTUP_LINK_PATH):
+        return
+
+    __create_startup_link()
+
+
+def remove_from_startup():
     """
     Remove the startup file.
     """
-    link_path = startup_link_path()
-
-    if os.path.isfile(link_path):
-        os.remove(link_path)
+    if os.path.isfile(__STARTUP_LINK_PATH):
+        os.remove(__STARTUP_LINK_PATH)
 
 
 def toggle_startup():
@@ -60,7 +56,20 @@ def toggle_startup():
     Returns:
         None
     """
-    if is_startup():
-        remove_startup_link()
+    if is_in_startup():
+        remove_from_startup()
     else:
-        create_startup_link()
+        add_to_startup()
+
+
+def fix_startup():
+    """
+    Fix the startup by creating a startup link if the system is portable and the startup link path exists.
+    """
+    if not is_portable():
+        return
+
+    if not os.path.isfile(__STARTUP_LINK_PATH):
+        return
+
+    __create_startup_link()

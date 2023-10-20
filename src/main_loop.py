@@ -18,7 +18,8 @@ from service.rules_service import RulesService
 from util.logs import log_setup, log
 from util.messages import yesno_error_box, show_error
 from util.path import get_tray_icon
-from util.startup import is_startup, toggle_startup
+from util.startup import is_in_startup, toggle_startup, fix_startup
+from util.utils import is_portable
 
 
 def priority_setup():
@@ -50,7 +51,7 @@ def init_tray() -> Icon:
 
         Menu.SEPARATOR,
 
-        MenuItem('Run on Startup', lambda item: toggle_startup(), lambda item: is_startup(), visible=getattr(sys, 'frozen', False)),
+        MenuItem('Run on Startup', lambda item: toggle_startup(), lambda item: is_in_startup(), visible=is_portable()),
         MenuItem('Open log file', lambda item: os.startfile(config.logging.filename)),
 
         Menu.SEPARATOR,
@@ -95,6 +96,7 @@ def start_app():
     tray: Optional[Icon] = None
 
     try:
+        fix_startup()
         log_setup()
         priority_setup()
 
