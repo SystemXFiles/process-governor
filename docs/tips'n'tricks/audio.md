@@ -6,6 +6,10 @@
 
 ---
 
+>**Foreword:**
+>
+>If you are involved in music, streaming, or simply aim for perfect sound in Discord or at work, and you use real-time sound processing, this article is for you. It will discuss methods of system optimization to prevent sound problems such as stuttering or crackling under high CPU load. The proposed approach will help you configure CPU resources so that audio processes are prioritized and do not suffer from competition with other tasks.
+
 ### Introduction
 
 In this article, we will explore the process of optimizing audio on a computer using the **Process Governor** tool. This
