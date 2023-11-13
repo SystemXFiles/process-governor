@@ -8,7 +8,7 @@ from model.process import Process
 
 class ProcessesInfoService(ABC):
     """
-    The ProcessesInfoService class provides methods for retrieving information about running processes in Process Governor.
+    The ProcessesInfoService class provides methods for retrieving information about running processes.
     It is an abstract base class (ABC) to be subclassed by specific implementation classes.
     """
 

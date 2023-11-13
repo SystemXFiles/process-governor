@@ -5,9 +5,9 @@ import psutil
 from psutil import STATUS_STOPPED, NoSuchProcess
 from psutil._pswindows import WindowsService
 
+from constants.any import LOG
 from model.service import Service
-from util.logs import log
-from util.utils import suppress_exception
+from util.decorators import suppress_exception
 
 # фикс бага psutil
 WindowsService.description = suppress_exception(WindowsService.description, FileNotFoundError)
@@ -15,7 +15,7 @@ WindowsService.description = suppress_exception(WindowsService.description, File
 
 class ServicesInfoService(ABC):
     """
-    The ServicesInfoService class provides methods for retrieving information about running services in Process Governor.
+    The ServicesInfoService class provides methods for retrieving information about running services.
     It is an abstract base class (ABC) to be subclassed by specific implementation classes.
     """
 
@@ -46,7 +46,7 @@ class ServicesInfoService(ABC):
                     info['binpath']
                 )
             except NoSuchProcess as _:
-                log.warning(f"No such service: {service.name}")
+                LOG.warning(f"No such service: {service.name}")
 
         return result
 

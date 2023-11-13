@@ -5,7 +5,7 @@ from typing import Optional
 @dataclass
 class Service:
     """
-    The Service class represents information about a Windows service in Process Governor.
+    The Service class represents information about a Windows service.
 
     It includes attributes such as service process ID (pid), service name, display name, description, current status,
     and binary path.

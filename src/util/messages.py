@@ -1,37 +1,6 @@
-from enum import IntEnum
-
 from win32api import MessageBoxEx
-from win32con import MB_ICONWARNING, MB_ICONINFORMATION, MB_ICONERROR, MB_ICONQUESTION, MB_OK, MB_OKCANCEL, \
-    MB_ABORTRETRYIGNORE, MB_YESNOCANCEL, MB_YESNO, MB_RETRYCANCEL, IDOK, IDCANCEL, IDABORT, IDRETRY, IDIGNORE, IDYES, \
-    IDNO, IDCLOSE, IDHELP
 
-
-class MBIcon(IntEnum):
-    WARNING = MB_ICONWARNING
-    INFORMATION = MB_ICONINFORMATION
-    ERROR = MB_ICONERROR
-    QUESTION = MB_ICONQUESTION
-
-
-class MBButton(IntEnum):
-    OK = MB_OK
-    OKCANCEL = MB_OKCANCEL
-    ABORTRETRYIGNORE = MB_ABORTRETRYIGNORE
-    YESNOCANCEL = MB_YESNOCANCEL
-    YESNO = MB_YESNO
-    RETRYCANCEL = MB_RETRYCANCEL
-
-
-class MBResult(IntEnum):
-    OK = IDOK
-    CANCEL = IDCANCEL
-    ABORT = IDABORT
-    RETRY = IDRETRY
-    IGNORE = IDIGNORE
-    YES = IDYES
-    NO = IDNO
-    CLOSE = IDCLOSE
-    HELP = IDHELP
+from enums.messages import MBIcon, MBButton, MBResult
 
 
 def message_box(title: str, message: str, icon: MBIcon, btn: MBButton) -> MBResult:
@@ -84,4 +53,3 @@ def show_info(title, message):
         message (str): The message to display in the error message box.
     """
     message_box(title, message, MBIcon.INFORMATION, MBButton.OK)
-

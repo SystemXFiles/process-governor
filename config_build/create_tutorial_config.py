@@ -1,4 +1,4 @@
-from psutil._pswindows import Priority, IOPriority
+from psutil._pswindows import Priority
 
 from configuration.rule import Rule
 from service.config_service import ConfigService
@@ -51,4 +51,3 @@ if __name__ == '__main__':
     ]
 
     ConfigService.save_config(config)
-

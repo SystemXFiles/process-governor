@@ -1,60 +1,46 @@
 import os
 import sys
 
-import winshell
-
-from util.path import get_startup_script
+from constants.any import STARTUP_LINK_PATH, STARTUP_TASK_NAME
+from constants.resources import STARTUP_SCRIPT
+from util.scheduler import TaskScheduler
 from util.utils import is_portable
-
-__STARTUP_LINK_PATH = os.path.join(winshell.startup(), "Process Governor.lnk")
-
-
-def __create_startup_link():
-    """
-    Creates a startup link for the application.
-    """
-    with winshell.shortcut(__STARTUP_LINK_PATH) as link:
-        link.path = f"\"{get_startup_script()}\""
-        link.description = "Process Governor"
-        link.icon_location = (sys.executable, 0)
-        link.working_directory = os.getcwd()
-        link.arguments = f"\"{sys.executable}\""
 
 
 def is_in_startup():
     """
-    Check if the startup link path exists as a file.
+    Check if the current application is set to run during system startup.
+
+    Returns:
+        bool: True if the application is set to run during system startup, False otherwise.
     """
-    return os.path.isfile(__STARTUP_LINK_PATH)
+    return TaskScheduler.check_task(STARTUP_TASK_NAME)
 
 
 def add_to_startup():
     """
-    Create a shortcut in the Windows startup folder.
+    Add the current application to the system's startup programs.
     """
-    if os.path.isfile(__STARTUP_LINK_PATH):
+    if is_in_startup():
         return
 
-    __create_startup_link()
+    TaskScheduler.create_startup_task(
+        STARTUP_TASK_NAME,
+        f"'{STARTUP_SCRIPT}' '{sys.executable}'"
+    )
 
 
 def remove_from_startup():
     """
-    Remove the startup file.
+    Remove the current application from the system's startup programs.
     """
-    if os.path.isfile(__STARTUP_LINK_PATH):
-        os.remove(__STARTUP_LINK_PATH)
+    if is_in_startup():
+        TaskScheduler.delete_task(STARTUP_TASK_NAME)
 
 
 def toggle_startup():
     """
-    Toggle the startup link based on whether it currently exists or not.
-
-    Parameters:
-        None
-
-    Returns:
-        None
+    Toggle the startup status of the application.
     """
     if is_in_startup():
         remove_from_startup()
@@ -64,12 +50,23 @@ def toggle_startup():
 
 def fix_startup():
     """
-    Fix the startup by creating a startup link if the system is portable and the startup link path exists.
+    Fixes autostart if the app has been moved.
     """
     if not is_portable():
         return
 
-    if not os.path.isfile(__STARTUP_LINK_PATH):
+    if not is_in_startup():
         return
 
-    __create_startup_link()
+    remove_from_startup()
+    add_to_startup()
+
+
+def remove_old_startup_method():
+    """
+    Removes the old startup method by deleting the startup link file if it exists.
+    """
+    if not os.path.isfile(STARTUP_LINK_PATH):
+        return
+
+    os.remove(STARTUP_LINK_PATH)

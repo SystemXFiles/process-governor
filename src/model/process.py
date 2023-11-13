@@ -8,7 +8,7 @@ from psutil._pswindows import Priority, IOPriority
 @dataclass
 class Process:
     """
-    The Process class represents information about a running process in Process Governor.
+    The Process class represents information about a running process.
 
     It includes attributes such as process ID (pid), executable name (exe), process name (name), priority (nice), I/O priority
     (ionice), CPU core affinity, and the associated psutil.Process object.

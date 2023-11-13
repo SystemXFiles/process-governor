@@ -9,7 +9,7 @@ from util.utils import parse_affinity
 
 class Rule(BaseModel):
     """
-    The Rule class defines a rule for configuring process and service behavior in Process Governor.
+    The Rule class defines a rule for configuring process and service behavior.
 
     Rules can be applied to processes or services based on criteria such as service selector, process selector, priority,
     I/O priority, and CPU core affinity.

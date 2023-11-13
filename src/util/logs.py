@@ -4,9 +4,8 @@ from logging import StreamHandler
 from logging.handlers import RotatingFileHandler
 
 from configuration.config import Config
+from constants.any import LOG
 from service.config_service import ConfigService
-
-log = logging.getLogger('proc-gov')
 
 
 def log_setup():
@@ -34,6 +33,6 @@ def log_setup():
     console_handler.setFormatter(formatter)
     file_handler.setFormatter(formatter)
 
-    log.setLevel(config.logging.level_as_int())
-    log.addHandler(file_handler)
-    log.addHandler(console_handler)
+    LOG.setLevel(config.logging.level_as_int())
+    LOG.addHandler(file_handler)
+    LOG.addHandler(console_handler)

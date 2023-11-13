@@ -5,9 +5,8 @@ from os.path import exists
 from typing import Optional
 
 from configuration.config import Config
-from util.utils import cached
-
-CONFIG_FILE_NAME = 'config.json'
+from constants.any import CONFIG_FILE_NAME
+from util.decorators import cached
 
 
 class ConfigService(ABC):

@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 
 class Logs(BaseModel):
     """
-    The Logs class represents the logging configuration for Process Governor.
+    The Logs class represents the logging configuration for application.
 
     It defines the settings for enabling/disabling logging, specifying the log file name, log level, maximum log file size,
     and the number of backup log files to keep.

@@ -1,25 +1,22 @@
 import os
-import sys
 import traceback
 from threading import Thread
 from time import sleep
 from typing import Optional
 
 import psutil
-import pystray
-from PIL import Image
 from psutil._pswindows import Priority, IOPriority
-from pystray import MenuItem, Menu
 from pystray._win32 import Icon
 
 from configuration.config import Config
-from service.config_service import ConfigService, CONFIG_FILE_NAME
+from constants.any import LOG
+from constants.app_info import APP_NAME_WITH_VERSION, APP_NAME
+from service.config_service import ConfigService
 from service.rules_service import RulesService
-from util.logs import log_setup, log
+from ui.tray import init_tray
+from util.logs import log_setup
 from util.messages import yesno_error_box, show_error
-from util.path import get_tray_icon
-from util.startup import is_in_startup, toggle_startup, fix_startup
-from util.utils import is_portable
+from util.startup import remove_old_startup_method, fix_startup
 
 
 def priority_setup():
@@ -36,32 +33,6 @@ def priority_setup():
         pass
 
 
-def init_tray() -> Icon:
-    """
-    Initializes and returns a system tray icon.
-
-    Returns:
-        Icon: The system tray icon.
-    """
-    image: Image = Image.open(get_tray_icon())
-    config: Config = ConfigService.load_config()
-
-    menu: tuple[MenuItem, ...] = (
-        MenuItem('Open JSON config', lambda item: os.startfile(CONFIG_FILE_NAME), default=True),
-
-        Menu.SEPARATOR,
-
-        MenuItem('Run on Startup', lambda item: toggle_startup(), lambda item: is_in_startup(), visible=is_portable()),
-        MenuItem('Open log file', lambda item: os.startfile(config.logging.filename)),
-
-        Menu.SEPARATOR,
-
-        MenuItem('Quit', lambda item: item.stop()),
-    )
-
-    return pystray.Icon("tray_icon", image, "Process Governor", menu)
-
-
 def main_loop(tray: Icon):
     """
     Main application loop for applying rules at regular intervals, updating the configuration, and managing the system tray icon.
@@ -73,7 +44,7 @@ def main_loop(tray: Icon):
     thread = Thread(target=tray.run)
     thread.start()
 
-    log.info('Application started')
+    LOG.info('Application started')
 
     config: Optional[Config] = None
     is_changed: bool
@@ -84,12 +55,12 @@ def main_loop(tray: Icon):
         RulesService.apply_rules(config, is_changed)
         sleep(config.ruleApplyIntervalSeconds)
 
-    log.info('The application has stopped')
+    LOG.info('The application has stopped')
 
 
 def start_app():
     """
-    Start the Process Governor application.
+    Start application.
 
     This function loads the configuration, sets up logging and process priorities, and starts the main application loop.
     """
@@ -97,6 +68,7 @@ def start_app():
 
     try:
         fix_startup()
+        remove_old_startup_method()
         log_setup()
         priority_setup()
 
@@ -105,7 +77,7 @@ def start_app():
     except KeyboardInterrupt:
         pass
     except BaseException as e:
-        log.exception(e)
+        LOG.exception(e)
 
         config: Optional[Config] = None
 
@@ -114,18 +86,18 @@ def start_app():
         except:
             pass
 
-        title = "Process Governor - Error Detected"
+        title = f"{APP_NAME_WITH_VERSION} - Error Detected"
 
         if config:
             message = (
-                f"An error has occurred in the Process Governor application. To troubleshoot, please check the log "
+                f"An error has occurred in the {APP_NAME} application. To troubleshoot, please check the log "
                 f"file: {config.logging.filename} for details.\n\nWould you like to open the log file?"
             )
 
             if yesno_error_box(title, message):
                 os.startfile(config.logging.filename)
         else:
-            message = f"An error has occurred in the Process Governor application.\n\n" + traceback.format_exc()
+            message = f"An error has occurred in the {APP_NAME} application.\n\n" + traceback.format_exc()
             show_error(title, message)
     finally:
         if tray:

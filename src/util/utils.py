@@ -1,90 +1,9 @@
-import logging
 import sys
-from contextlib import suppress
 from fnmatch import fnmatch
-from functools import wraps, lru_cache
-from time import time
-from typing import Type, TypeVar, Callable, List, Optional
+from functools import lru_cache
+from typing import List, Optional
 
 from psutil import cpu_times
-
-T = TypeVar('T')
-
-
-def suppress_exception(function: Callable[..., T], *exception_type: Type[BaseException]) -> Callable[..., T]:
-    """
-    Decorator that suppresses specified exceptions raised by a function.
-
-    Args:
-        function (Callable): The function to decorate.
-        *exception_type (Type[BaseException]): Variable number of exception types to suppress.
-
-    Returns:
-        Callable: A decorated function that suppresses the specified exceptions.
-    """
-    if getattr(function, '__suppressed__', False):
-        return function
-
-    exception_type = exception_type or [type(BaseException)]
-
-    @wraps(function)
-    def wrapper(*args, **kwargs) -> Callable[..., T]:
-        with suppress(*exception_type):
-            return function(*args, **kwargs)
-
-    wrapper.__suppressed__ = True
-
-    return wrapper
-
-
-def cached(timeout_in_seconds, logged=False) -> Callable[..., T]:
-    """
-    Decorator that caches the results of a function for a specified timeout.
-
-    Args:
-        timeout_in_seconds (int): The cache timeout duration in seconds.
-        logged (bool, optional): Whether to log cache initialization and hits (default is False).
-
-    Returns:
-        Callable: A decorated function with caching capabilities.
-    """
-
-    def decorator(function: Callable[..., T]) -> Callable[..., T]:
-        if logged:
-            logging.info("-- Initializing cache for", function.__name__)
-
-        cache = {}
-
-        @wraps(function)
-        def decorated_function(*args, **kwargs) -> T:
-            if logged:
-                logging.info("-- Called function", function.__name__)
-
-            key = args, frozenset(kwargs.items())
-            result: Optional[tuple[T]] = None
-
-            if key in cache:
-                if logged:
-                    logging.info("-- Cache hit for", function.__name__, key)
-
-                cache_hit, expiry = cache[key]
-
-                if time() - expiry < timeout_in_seconds:
-                    result = cache_hit
-                elif logged:
-                    logging.info("-- Cache expired for", function.__name__, key)
-            elif logged:
-                logging.info("-- Cache miss for", function.__name__, key)
-
-            if result is None:
-                result = (function(*args, **kwargs),)
-                cache[key] = result, time()
-
-            return result[0]
-
-        return decorated_function
-
-    return decorator
 
 
 @lru_cache
@@ -142,3 +61,32 @@ def is_portable():
     Check if the script is running in a portable environment.
     """
     return getattr(sys, 'frozen', False)
+
+
+def compare_version(version1, version2):
+    """
+    Compare two version numbers.
+
+    Parameters:
+        version1 (str): The first version number.
+        version2 (str): The second version number.
+
+    Returns:
+        int: 1 if version1 is greater than version2, -1 if version1 is less than version2, 0 if they are equal.
+    """
+    version1 = version1.lstrip('v')
+    version2 = version2.lstrip('v')
+
+    versions1 = [int(v) for v in version1.split(".")]
+    versions2 = [int(v) for v in version2.split(".")]
+
+    for i in range(max(len(versions1), len(versions2))):
+        v1 = versions1[i] if i < len(versions1) else 0
+        v2 = versions2[i] if i < len(versions2) else 0
+
+        if v1 > v2:
+            return 1
+        elif v1 < v2:
+            return -1
+
+    return 0

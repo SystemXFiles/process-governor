@@ -1,6 +1,5 @@
 import os
 from abc import ABC
-from enum import Enum
 from typing import Optional, List
 
 import psutil
@@ -8,34 +7,26 @@ from psutil import AccessDenied, NoSuchProcess
 from pyuac import isUserAdmin
 
 from configuration.config import Config
-from configuration.handler.io_priority import iopriority_to_str
-from configuration.handler.priority import priority_to_str
 from configuration.rule import Rule
+from constants.any import LOG
+from constants.priority_mappings import iopriority_to_str, priority_to_str
+from enums.process import ProcessParameter
 from model.process import Process
 from model.service import Service
 from service.processes_info_service import ProcessesInfoService
 from service.services_info_service import ServicesInfoService
-from util.logs import log
-from util.utils import fnmatch_cached, cached
-
-
-class _ProcessParameter(Enum):
-    AFFINITY = "affinity"
-    NICE = "nice"
-    IONICE = "ionice"
-
-    def __str__(self):
-        return self.value
+from util.decorators import cached
+from util.utils import fnmatch_cached
 
 
 class RulesService(ABC):
     """
-    The RulesService class provides methods for applying rules to processes and services in Process Governor.
+    The RulesService class provides methods for applying rules to processes and services.
     It is an abstract base class (ABC) to be subclassed by specific implementation classes.
     """
 
     __ignore_pids: set[int] = {0, os.getpid()}
-    __ignored_process_parameters: dict[tuple[int, str], set[_ProcessParameter]] = {}
+    __ignored_process_parameters: dict[tuple[int, str], set[ProcessParameter]] = {}
 
     @classmethod
     def apply_rules(cls, config: Config, force=False):
@@ -80,38 +71,38 @@ class RulesService(ABC):
 
                 tuple_pid_name = (pid, process_info.name)
                 ignored_process_parameters = cls.__ignored_process_parameters.get(tuple_pid_name, set())
-                not_success: List[_ProcessParameter] = []
+                not_success: List[ProcessParameter] = []
 
-                if _ProcessParameter.AFFINITY not in ignored_process_parameters:
+                if ProcessParameter.AFFINITY not in ignored_process_parameters:
                     cls.__set_affinity(not_success, process_info, rule)
 
-                if _ProcessParameter.NICE not in ignored_process_parameters:
+                if ProcessParameter.NICE not in ignored_process_parameters:
                     cls.__set_nice(not_success, process_info, rule)
 
-                if _ProcessParameter.IONICE not in ignored_process_parameters:
+                if ProcessParameter.IONICE not in ignored_process_parameters:
                     cls.__set_ionice(not_success, process_info, rule)
 
                 if not_success:
                     cls.__ignore_process_parameter(tuple_pid_name, set(not_success))
 
-                    log.warning(f"Set failed [{', '.join(map(str, not_success))}] "
+                    LOG.warning(f"Set failed [{', '.join(map(str, not_success))}] "
                                 f"for {process_info.name} ({process_info.pid}"
                                 f"{', ' + service_info.name + '' if service_info else ''}"
                                 f")")
             except NoSuchProcess as _:
-                log.warning(f"No such process: {pid}")
+                LOG.warning(f"No such process: {pid}")
 
     @classmethod
     def __set_ionice(cls, not_success, process_info, rule: Rule):
         if not rule.ioPriority or process_info.ionice == rule.ioPriority:
             return
 
-        parameter = _ProcessParameter.IONICE
+        parameter = ProcessParameter.IONICE
 
         try:
             process_info.process.ionice(rule.ioPriority)
-            log.info(
-                f"Set {parameter.value} {iopriority_to_str(rule.ioPriority)} for {process_info.name} ({process_info.pid})")
+            LOG.info(
+                f"Set {parameter.value} {iopriority_to_str[rule.ioPriority]} for {process_info.name} ({process_info.pid})")
         except AccessDenied as _:
             not_success.append(parameter)
 
@@ -120,12 +111,12 @@ class RulesService(ABC):
         if not rule.priority or process_info.nice == rule.priority:
             return
 
-        parameter = _ProcessParameter.NICE
+        parameter = ProcessParameter.NICE
 
         try:
             process_info.process.nice(rule.priority)
-            log.info(
-                f"Set {parameter.value} {priority_to_str(rule.priority)} for {process_info.name} ({process_info.pid})")
+            LOG.info(
+                f"Set {parameter.value} {priority_to_str[rule.priority]} for {process_info.name} ({process_info.pid})")
         except AccessDenied as _:
             not_success.append(parameter)
 
@@ -134,7 +125,7 @@ class RulesService(ABC):
         if rule.affinity is None:
             return
 
-        parameter = _ProcessParameter.AFFINITY
+        parameter = ProcessParameter.AFFINITY
         affinity_as_list = rule.affinity_as_list()
 
         if process_info.affinity == affinity_as_list:
@@ -142,7 +133,7 @@ class RulesService(ABC):
 
         try:
             process_info.process.cpu_affinity(affinity_as_list)
-            log.info(f"Set {parameter.value} {rule.affinity} for {process_info.name} ({process_info.pid})")
+            LOG.info(f"Set {parameter.value} {rule.affinity} for {process_info.name} ({process_info.pid})")
         except AccessDenied as _:
             not_success.append(parameter)
 
@@ -157,7 +148,7 @@ class RulesService(ABC):
         return None
 
     @classmethod
-    def __ignore_process_parameter(cls, tuple_pid_name: tuple[int, str], parameters: set[_ProcessParameter]):
+    def __ignore_process_parameter(cls, tuple_pid_name: tuple[int, str], parameters: set[ProcessParameter]):
         if isUserAdmin():
             cls.__ignored_process_parameters[tuple_pid_name] = parameters
 
