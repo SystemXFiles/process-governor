@@ -70,3 +70,4 @@ def remove_old_startup_method():
         return
 
     os.remove(STARTUP_LINK_PATH)
+    add_to_startup()
