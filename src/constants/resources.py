@@ -1,4 +1,6 @@
+from typing import Final
+
 from constants.app_info import APP_PATH
 
-STARTUP_SCRIPT = f"{APP_PATH}/resources/startup.bat"
-TRAY_ICON = f"{APP_PATH}/resources/app.ico"
+STARTUP_SCRIPT: Final[str] = f"{APP_PATH}/resources/startup.bat"
+TRAY_ICON: Final[str] = f"{APP_PATH}/resources/app.ico"

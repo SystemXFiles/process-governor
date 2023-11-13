@@ -1,12 +1,13 @@
 import logging
 import os
+from logging import Logger
 from typing import Final
 
 import winshell
 
 from constants.app_info import APP_NAME
 
-LOG = logging.getLogger('proc-gov')
+LOG: Final[Logger] = logging.getLogger('proc-gov')
 CONFIG_FILE_NAME: Final[str] = 'config.json'
 LOCK_FILE: Final[str] = "pg.lock"
 
