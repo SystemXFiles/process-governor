@@ -5,7 +5,7 @@ from typing import Final
 from util.utils import is_portable
 
 APP_NAME: Final[str] = "Process Governor"
-APP_VERSION: Final[str] = "1.1.4"
+APP_VERSION: Final[str] = "1.1.5"
 APP_AUTHOR: Final[str] = "System X - Files"
 
 CURRENT_TAG: Final[str] = f"v{APP_VERSION}"
