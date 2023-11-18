@@ -92,7 +92,8 @@ object within an array.
     - Example: `"serviceSelector": "MyService"`
     - Example with wildcards: `"serviceSelector": "Audio*"`
 
-- `priority` (string, optional): Sets the process or service priority. Valid values are:
+- `priority` (string, optional): Sets the process or service priority. 
+  Valid values are:
     - `"Idle"`
     - `"BelowNormal"`
     - `"Normal"`
@@ -101,20 +102,21 @@ object within an array.
     - `"Realtime"`
     - Example: `"priority": "High"`
 
-- `ioPriority` (string, optional): Sets the I/O priority for the process or service. Valid values are:
+- `ioPriority` (string, optional): Sets the I/O priority for the process or service. 
+  Valid values are:
     - `"VeryLow"`
     - `"Low"`
     - `"Normal"`
     - `"High"`: Setting the I/O priority to "High" may result in an AccessDenied error in most cases.
     - Example: `"ioPriority": "Normal"`
 
-- `affinity` (string, optional): Specifies CPU core affinity. You can define affinity as:
-    - A range, inclusive (e.g., "1-5").
-    - Specific cores (e.g., "1;2;3;4;5").
-    - A combination of both (e.g., "1-4;5").
-    - Example (range): `"affinity": "1-4"`
-    - Example (specific cores): `"affinity": "0;2;4"`
-    - Example (combination): `"affinity": "1;3-5"`
+- `affinity` (string, optional): Specifies CPU core affinity. 
+  If left blank, all CPU cores will be selected. 
+  You can define affinity as:
+    - Range (inclusive): `"affinity": "1-4"`
+    - Specific cores: `"affinity": "0;2;4"`
+    - Combination: `"affinity": "1;3-5"`
+    - All cores: `"affinity": ""`
 
 ### Example Configuration
 
