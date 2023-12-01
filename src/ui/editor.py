@@ -3,7 +3,7 @@ from tkinter import ttk, messagebox
 
 from constants.app_info import APP_NAME_WITH_VERSION
 from constants.resources import APP_ICON
-from constants.ui import RULE_COLUMNS, UI_PADDING, RE_WIN_SIZE, ActionEvents, RulesListEvents
+from constants.ui import RULE_COLUMNS, UI_PADDING, RE_WIN_SIZE, ActionEvents, RulesListEvents, EditableTreeviewEvents
 from ui.widget.editor.actions import ActionsFrame
 from ui.widget.editor.rules_list import RulesList
 from ui.widget.editor.tooltip import Tooltip
@@ -16,6 +16,7 @@ class RuleEditor(tk.Tk):
     )
     _TITLE = "Rules configurator"
 
+    _last_tree_tooltip = _DEFAULT_TOOLTIP
     _tree = None
     _tooltip = None
     _actions = None
@@ -56,20 +57,25 @@ class RuleEditor(tk.Tk):
 
         cell = self._tree.get_cell_info(event)
 
-        if cell and not self._tree.is_editing():
-            self._tooltip.set(RULE_COLUMNS[cell.column_name].description)
+        if cell:
+            self._last_tree_tooltip = RULE_COLUMNS[cell.column_name].description
+            self._tooltip.set(self._last_tree_tooltip)
 
-    def _set_tooltip(self, widget, text: str, error: bool = False):
-        def on_enter(_):
-            if not self._tree.is_editing():
+    def _setup_tooltip(self, widget, text: str, error: bool = False, leave: bool = True, enter: bool = True):
+        if enter:
+            def on_enter(_):
                 self._tooltip.set(text, error)
 
-        def on_leave(_):
-            if not self._tree.is_editing():
+            widget.bind("<Enter>", on_enter)
+
+        if leave:
+            def on_leave(_):
                 self._tooltip.set(self._DEFAULT_TOOLTIP)
 
-        widget.bind("<Enter>", on_enter)
-        widget.bind("<Leave>", on_leave)
+            widget.bind("<Leave>", on_leave)
+
+    def _setup_tooltip_cell_editor(self, _=None):
+        self._setup_tooltip(self._tree.popup(), self._last_tree_tooltip, leave=False)
 
     def _create_treeview(self):
         self._tree = tree = RulesList(self)
@@ -79,12 +85,13 @@ class RuleEditor(tk.Tk):
         tree.bind("<Delete>", self._delete_selected, "+")
         tree.bind("<Motion>", self._set_tooltip_by_tree, "+")
         tree.bind(RulesListEvents.UNSAVED_CHANGES_STATE, self._update_buttons_state, "+")
+        tree.bind(EditableTreeviewEvents.START_EDIT_CELL, self._setup_tooltip_cell_editor, "+")
 
         tree.pack(fill=tk.BOTH, expand=True, padx=UI_PADDING, pady=UI_PADDING)
 
-        tree.error_icon_created = lambda icon, tooltip: self._set_tooltip(icon, tooltip, True)
+        tree.error_icon_created = lambda icon, tooltip: self._setup_tooltip(icon, tooltip, True, False)
 
-        self._set_tooltip(tree, "")
+        self._setup_tooltip(tree, "", enter=False)
 
     def _create_buttons(self):
         self._actions = actions = ActionsFrame(self)
@@ -95,11 +102,11 @@ class RuleEditor(tk.Tk):
         actions.bind(ActionEvents.DOWN, lambda _: self._move_item_down(), "+")
         actions.bind(ActionEvents.SAVE, lambda _: self._save(), "+")
 
-        self._set_tooltip(actions.add, "__Adds__ a rule after the current")
-        self._set_tooltip(actions.delete, "__Deletes__ the selected rules")
-        self._set_tooltip(actions.move_up, "__Moves__ the current rule __up__")
-        self._set_tooltip(actions.move_down, "__Moves__ the current rule __down__")
-        self._set_tooltip(actions.save, "__Saves__ the settings")
+        self._setup_tooltip(actions.add, "__Adds__ a rule after the current")
+        self._setup_tooltip(actions.delete, "__Deletes__ the selected rules")
+        self._setup_tooltip(actions.move_up, "__Moves__ the current rule __up__")
+        self._setup_tooltip(actions.move_down, "__Moves__ the current rule __down__")
+        self._setup_tooltip(actions.save, "__Saves__ the settings")
 
         self._update_buttons_state()
 

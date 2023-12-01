@@ -35,7 +35,7 @@ class CellEditor(ttk.Frame):
 
     def _setup_widgets(self):
         def on_change(_):
-            self.event_generate(EditableTreeviewEvents.SAVE_CELL)
+            self.event_generate(EditableTreeviewEvents._SAVE_CELL)
 
         def on_escape(_):
             self.event_generate(EditableTreeviewEvents.ESCAPE)
@@ -128,6 +128,9 @@ class EditableTreeview(ScrollableTreeview):
     def is_editing(self):
         return self._popup is not None
 
+    def popup(self):
+        return self._popup
+
     def _on_dbl_click(self, event):
         self._destroy_popup()
         self._cell = self.get_cell_info(event)
@@ -139,11 +142,12 @@ class EditableTreeview(ScrollableTreeview):
 
         self._popup = entry_popup = CellEditor(self, self._cell)
 
-        entry_popup.bind(EditableTreeviewEvents.SAVE_CELL, self._save_and_destroy_popup, '+')
+        entry_popup.bind(EditableTreeviewEvents._SAVE_CELL, self._save_and_destroy_popup, '+')
         entry_popup.bind(EditableTreeviewEvents.ESCAPE, self._destroy_popup, '+')
         entry_popup.bind("<Destroy>", self._on_popup_destroy, '+')
 
         self._place_popup()
+        self.event_generate(EditableTreeviewEvents.START_EDIT_CELL)
 
     def _place_popup(self, _=None):
         if not self._popup:

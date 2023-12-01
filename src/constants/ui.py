@@ -27,7 +27,9 @@ class RulesListEvents:
 class EditableTreeviewEvents:
     CHANGE: Final[str] = "<<Change>>"
     ESCAPE: Final[str] = "<<Escape>>"
-    SAVE_CELL: Final[str] = "<<SaveCell>>"
+    START_EDIT_CELL: Final[str] = "<<StartEditCell>>"
+
+    _SAVE_CELL: Final[str] = "<<SaveCell>>"
 
 
 class ScrollableTreeviewEvents:
