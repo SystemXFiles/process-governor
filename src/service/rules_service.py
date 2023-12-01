@@ -15,6 +15,7 @@ from model.process import Process
 from model.service import Service
 from service.processes_info_service import ProcessesInfoService
 from service.services_info_service import ServicesInfoService
+from util.cpu import format_affinity
 from util.decorators import cached
 from util.utils import fnmatch_cached
 
@@ -121,19 +122,19 @@ class RulesService(ABC):
             not_success.append(parameter)
 
     @classmethod
-    def __set_affinity(cls, not_success, process_info, rule: Rule):
-        if rule.affinity is None:
+    def __set_affinity(cls, not_success, process_info: Process, rule: Rule):
+        if not rule.affinity:
             return
 
         parameter = ProcessParameter.AFFINITY
-        affinity_as_list = rule.affinity_as_list()
 
-        if process_info.affinity == affinity_as_list:
+        if process_info.affinity == rule.affinity:
             return
 
         try:
-            process_info.process.cpu_affinity(affinity_as_list)
-            LOG.info(f"Set {parameter.value} {rule.affinity} for {process_info.name} ({process_info.pid})")
+            process_info.process.cpu_affinity(rule.affinity)
+            LOG.info(
+                f"Set {parameter.value} {format_affinity(rule.affinity)} for {process_info.name} ({process_info.pid})")
         except AccessDenied as _:
             not_success.append(parameter)
 

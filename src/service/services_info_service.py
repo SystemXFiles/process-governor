@@ -63,4 +63,4 @@ class ServicesInfoService(ABC):
         Returns:
             Optional[Service]: The Service object if found, or None if not found.
         """
-        return dct.get(pid, None)
+        return dct.get(pid)

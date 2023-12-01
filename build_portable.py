@@ -35,19 +35,20 @@ pyinstaller_versionfile.create_versionfile(
 
 # Running PyInstaller to build the application
 PyInstaller.__main__.run([
-    'process-governor.py',                      # Source script file
-    '--clean',                                  # Clean previous builds
-    '--noconfirm',                              # No confirmation when deleting dist directory
-    '--onedir',                                 # Build the app in one directory
-    '--uac-admin',                              # Request admin rights on launch
-    '--hide-console', 'hide-early',             # Hide the console on startup
+    'process-governor.py',  # Source script file
+    '--clean',  # Clean previous builds
+    '--noconfirm',  # No confirmation when deleting dist directory
+    '--onedir',  # Build the app in one directory
+    '--uac-admin',  # Request admin rights on launch
+    '--hide-console', 'hide-early',  # Hide the console on startup
     '--add-data', './resources/*;./resources',  # Add additional resources
-    '--contents-directory', 'scripts',          # Directory for Python and app scripts in the built package
-    '--icon', 'resources/app.ico',              # Application icon
-    '--debug', 'noarchive',                     # Disables bundling of application scripts inside the exe
-    '--name', APP_NAME,                         # Name of the executable file
-    '--version-file', VERSION_FILE,             # Path to the version file
-    '--distpath', DIST,                         # Directory to save the built application
+    '--contents-directory', 'scripts',  # Directory for Python and app scripts in the built package
+    '--icon', 'resources/app.ico',  # Application icon
+    '--debug', 'noarchive',  # Disables bundling of application scripts inside the exe
+    '--name', APP_NAME,  # Name of the executable file
+    '--version-file', VERSION_FILE,  # Path to the version file
+    '--distpath', DIST,  # Directory to save the built application
+    '--collect-all', 'tksvg',
 ])
 
 # Creating an archive of the built application

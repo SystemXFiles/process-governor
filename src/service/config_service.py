@@ -5,7 +5,7 @@ from os.path import exists
 from typing import Optional
 
 from configuration.config import Config
-from constants.any import CONFIG_FILE_NAME
+from constants.any import CONFIG_FILE_NAME, CONFIG_FILE_ENCODING
 from util.decorators import cached
 
 
@@ -29,7 +29,7 @@ class ConfigService(ABC):
         if config is None:
             config = Config()
 
-        with open(CONFIG_FILE_NAME, 'w') as file:
+        with open(CONFIG_FILE_NAME, 'w', encoding=CONFIG_FILE_ENCODING) as file:
             json = config.model_dump_json(indent=4, exclude_none=True)
             file.write(json)
 
@@ -46,7 +46,7 @@ class ConfigService(ABC):
             cls.save_config(config := Config())
             return config
 
-        with open(CONFIG_FILE_NAME, 'r') as file:
+        with open(CONFIG_FILE_NAME, 'r', encoding=CONFIG_FILE_ENCODING) as file:
             return Config(**json.load(file))
 
     __prev_mtime = 0

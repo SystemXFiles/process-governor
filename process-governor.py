@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     if not pyuac.isUserAdmin():
         show_error(
-            APP_NAME_WITH_VERSION,
+            f"Error Detected - {APP_NAME_WITH_VERSION}",
             "This program requires administrator privileges to run.\n"
             "Please run the program as an administrator to ensure proper functionality."
         )

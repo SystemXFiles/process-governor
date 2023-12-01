@@ -86,7 +86,7 @@ def start_app():
         except:
             pass
 
-        title = f"{APP_NAME_WITH_VERSION} - Error Detected"
+        title = f"Error Detected - {APP_NAME_WITH_VERSION}"
 
         if config:
             message = (
