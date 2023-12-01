@@ -16,7 +16,6 @@ class RuleEditor(tk.Tk):
     )
     _TITLE = "Rules configurator"
 
-    _last_tree_tooltip = _DEFAULT_TOOLTIP
     _tree = None
     _tooltip = None
     _actions = None
@@ -58,8 +57,7 @@ class RuleEditor(tk.Tk):
         cell = self._tree.get_cell_info(event)
 
         if cell:
-            self._last_tree_tooltip = RULE_COLUMNS[cell.column_name].description
-            self._tooltip.set(self._last_tree_tooltip)
+            self._tooltip.set(RULE_COLUMNS[cell.column_name].description)
 
     def _setup_tooltip(self, widget, text: str, error: bool = False, leave: bool = True, enter: bool = True):
         if enter:
@@ -75,7 +73,14 @@ class RuleEditor(tk.Tk):
             widget.bind("<Leave>", on_leave)
 
     def _setup_tooltip_cell_editor(self, _=None):
-        self._setup_tooltip(self._tree.popup(), self._last_tree_tooltip, leave=False)
+        cell = self._tree.current_cell()
+
+        if cell:
+            self._setup_tooltip(
+                self._tree.popup(),
+                RULE_COLUMNS[cell.column_name].description,
+                leave=False
+            )
 
     def _create_treeview(self):
         self._tree = tree = RulesList(self)

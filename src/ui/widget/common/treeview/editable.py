@@ -10,7 +10,7 @@ from util.ui import full_visible_bbox
 ColumnType = Literal["text", "list"]
 
 
-@dataclass
+@dataclass(frozen=True)
 class CellInfo:
     column_id: str
     row_id: str
@@ -125,8 +125,8 @@ class EditableTreeview(ScrollableTreeview):
             cell_type
         )
 
-    def is_editing(self):
-        return self._popup is not None
+    def current_cell(self):
+        return self._cell
 
     def popup(self):
         return self._popup
