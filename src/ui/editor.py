@@ -147,17 +147,16 @@ class RuleEditor(tk.Tk):
             messagebox.showerror("Error", "An error occurred while saving.")
 
     def _add(self):
-        empty_row = len(RULE_COLUMNS) * ['']
         selected_items = self._tree.selection()
 
         if selected_items:
             selected_item = selected_items[0]
             index = self._tree.index(selected_item)
 
-            self._tree.insert('', index + 1, values=empty_row)
+            self._tree.insert('', index + 1)
             self._tree.selection_set(self._tree.get_children()[index + 1])
         else:
-            self._tree.insert('', 'end', values=empty_row)
+            self._tree.insert('', 'end')
 
         self._update_buttons_state()
 
