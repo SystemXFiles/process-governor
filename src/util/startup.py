@@ -60,14 +60,3 @@ def fix_startup():
 
     remove_from_startup()
     add_to_startup()
-
-
-def remove_old_startup_method():
-    """
-    Removes the old startup method by deleting the startup link file if it exists.
-    """
-    if not os.path.isfile(STARTUP_LINK_PATH):
-        return
-
-    os.remove(STARTUP_LINK_PATH)
-    add_to_startup()

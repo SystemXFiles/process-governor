@@ -68,7 +68,6 @@ def start_app():
 
     try:
         fix_startup()
-        remove_old_startup_method()
         log_setup()
         priority_setup()
 
