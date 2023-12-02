@@ -38,7 +38,7 @@ class ProcessesInfoService(ABC):
                     info['cpu_affinity'],
                     process
                 )
-            except NoSuchProcess as _:
+            except NoSuchProcess:
                 pass
 
         return result
@@ -71,7 +71,7 @@ class ProcessesInfoService(ABC):
                         info['cpu_affinity'],
                         process
                     )
-                except NoSuchProcess as _:
+                except NoSuchProcess:
                     pass
 
         cls.__prev_pids = current_pids

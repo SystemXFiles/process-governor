@@ -19,7 +19,7 @@ class Config(BaseModel):
     Default is 1 second.
     """
 
-    logging: Logs = Field(default_factory=Logs, )
+    logging: Logs = Field(default_factory=Logs)
     """
     An instance of the Logs class that defines logging settings for application.
     Default settings are provided by the Logs class.

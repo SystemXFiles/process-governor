@@ -1,19 +1,16 @@
 import os
 import webbrowser
-from threading import Thread
 
 import pystray
 from PIL import Image
 from pystray import MenuItem, Menu
 from pystray._win32 import Icon
 
-from configuration.config import Config
-from constants.any import CONFIG_FILE_NAME, LOG
+from constants.any import CONFIG_FILE_NAME, LOG_FILE_NAME
 from constants.app_info import APP_NAME_WITH_VERSION, APP_NAME
 from constants.resources import APP_ICON
 from constants.updates import UPDATE_URL
-from service.config_service import ConfigService
-from ui.editor import RuleEditor
+from ui.editor import open_rule_editor
 from util.messages import yesno_error_box, show_error, show_info
 from util.startup import toggle_startup, is_in_startup
 from util.updates import check_latest_version
@@ -49,18 +46,6 @@ def check_updates():
             webbrowser.open(UPDATE_URL, new=0, autoraise=True)
 
 
-def open_rule_editor():
-    def editor():
-        try:
-            app = RuleEditor()
-            app.mainloop()
-        except BaseException as e:
-            LOG.exception(e)
-
-    thread = Thread(target=editor)
-    thread.start()
-
-
 def init_tray() -> Icon:
     """
     Initializes and returns a system tray icon.
@@ -69,7 +54,6 @@ def init_tray() -> Icon:
         Icon: The system tray icon.
     """
     image: Image = Image.open(APP_ICON)
-    config: Config = ConfigService.load_config()
 
     menu: tuple[MenuItem, ...] = (
         MenuItem(APP_NAME_WITH_VERSION, None, enabled=False),
@@ -79,7 +63,7 @@ def init_tray() -> Icon:
         Menu.SEPARATOR,
 
         MenuItem('Open config file', lambda item: os.startfile(CONFIG_FILE_NAME)),
-        MenuItem('Open log file', lambda item: os.startfile(config.logging.filename)),
+        MenuItem('Open log file', lambda item: os.startfile(LOG_FILE_NAME)),
         Menu.SEPARATOR,
 
         MenuItem(

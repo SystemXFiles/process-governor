@@ -1,20 +1,24 @@
+import os
 import tkinter as tk
+from threading import Thread
 from tkinter import ttk, messagebox
 
-from constants.app_info import APP_NAME_WITH_VERSION
+from constants.any import LOG, LOG_FILE_NAME
+from constants.app_info import APP_NAME_WITH_VERSION, APP_NAME
 from constants.resources import APP_ICON
-from constants.ui import RULE_COLUMNS, UI_PADDING, RE_WIN_SIZE, ActionEvents, RulesListEvents, EditableTreeviewEvents
+from constants.ui import RULE_COLUMNS, UI_PADDING, RC_WIN_SIZE, ActionEvents, RulesListEvents, EditableTreeviewEvents, \
+    RC_TITLE
 from ui.widget.editor.actions import ActionsFrame
 from ui.widget.editor.rules_list import RulesList
 from ui.widget.editor.tooltip import Tooltip
+from util.messages import yesno_error_box
 
 
-class RuleEditor(tk.Tk):
+class RuleConfigurator(tk.Tk):
     _DEFAULT_TOOLTIP = (
         "To add a new rule, click the **Add** button.\n"
         "To edit a rule, **double-click** on the corresponding cell."
     )
-    _TITLE = "Rules configurator"
 
     _tree = None
     _tooltip = None
@@ -30,14 +34,14 @@ class RuleEditor(tk.Tk):
 
         self.protocol("WM_DELETE_WINDOW", self._on_window_closing)
         self.iconbitmap(APP_ICON)
-        self.title(f"{self._TITLE} - {APP_NAME_WITH_VERSION}")
-        self.minsize(*RE_WIN_SIZE)
+        self.title(f"{RC_TITLE} - {APP_NAME_WITH_VERSION}")
+        self.minsize(*RC_WIN_SIZE)
 
     def _center_window(self):
-        x = (self.winfo_screenwidth() // 2) - (RE_WIN_SIZE[0] // 2)
-        y = (self.winfo_screenheight() // 2) - (RE_WIN_SIZE[1] // 2)
+        x = (self.winfo_screenwidth() // 2) - (RC_WIN_SIZE[0] // 2)
+        y = (self.winfo_screenheight() // 2) - (RC_WIN_SIZE[1] // 2)
 
-        self.geometry(f"{RE_WIN_SIZE[0]}x{RE_WIN_SIZE[1]}+{x}+{y}")
+        self.geometry(f"{RC_WIN_SIZE[0]}x{RC_WIN_SIZE[1]}+{x}+{y}")
 
     def _create_widgets(self):
         self._create_tooltips()
@@ -190,13 +194,13 @@ class RuleEditor(tk.Tk):
         if self._tree.unsaved_changes:
             if self._tree.has_error():
                 message = "There are unsaved changes. Do you want to discard them and exit?"
-                result = messagebox.askyesno(f"{self._TITLE} - {APP_NAME_WITH_VERSION}", message)
+                result = messagebox.askyesno(f"{RC_TITLE} - {APP_NAME_WITH_VERSION}", message)
 
                 if not result:
                     return
             else:
                 message = "There are unsaved changes. Do you want to save them before exiting?"
-                result = messagebox.askyesnocancel(f"{self._TITLE} - {APP_NAME_WITH_VERSION}", message)
+                result = messagebox.askyesnocancel(f"{RC_TITLE} - {APP_NAME_WITH_VERSION}", message)
 
                 if result is None:
                     return
@@ -227,6 +231,42 @@ class RuleEditor(tk.Tk):
         actions.delete["state"] = tk.NORMAL if selected_items else tk.DISABLED
 
 
+is_editor_open = False
+
+
+def open_rule_editor():
+    global is_editor_open
+
+    def editor():
+        global is_editor_open
+        try:
+            is_editor_open = True
+
+            app = RuleConfigurator()
+            app.mainloop()
+        except:
+            LOG.exception(f"An unexpected error occurred in the {RC_TITLE} of {APP_NAME}.")
+            show_rule_editor_error_message()
+        finally:
+            is_editor_open = False
+
+    if not is_editor_open:
+        thread = Thread(target=editor)
+        thread.start()
+
+
+def show_rule_editor_error_message():
+    title = f"Error Detected - {APP_NAME_WITH_VERSION}"
+    message = (
+        f"An error has occurred in the {RC_TITLE} of {APP_NAME}.\n"
+        f"To troubleshoot, please check the log file `{LOG_FILE_NAME}` for details.\n\n"
+        f"Would you like to open the log file?"
+    )
+
+    if yesno_error_box(title, message):
+        os.startfile(LOG_FILE_NAME)
+
+
 if __name__ == "__main__":
-    app = RuleEditor()
+    app = RuleConfigurator()
     app.mainloop()

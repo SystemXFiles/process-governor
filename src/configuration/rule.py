@@ -1,10 +1,12 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
+from pydantic_core import PydanticCustomError
 
 from configuration.handler.affinity import Affinity
 from configuration.handler.io_priority import IOPriorityStr
 from configuration.handler.priority import PriorityStr
+from constants.any import BOTH_SELECTORS_SET
 
 
 class Rule(BaseModel):
@@ -45,3 +47,23 @@ class Rule(BaseModel):
                     "defining which CPU cores are allowed for execution.\n\n"
                     "**Format:** range `1-4`, specific cores `0;2;4`, combination `1;3-5`."
     )
+
+    @model_validator(mode="after")
+    def check_exclusive_fields(self):
+        fields = self.model_fields
+        process_selector_title = fields["processSelector"].title
+        service_selector_title = fields["serviceSelector"].title
+
+        if self.processSelector and self.serviceSelector:
+            raise PydanticCustomError(
+                BOTH_SELECTORS_SET,
+                f'Only one of **{process_selector_title}** or **{service_selector_title}** can be set'
+            )
+
+        if not self.processSelector and not self.serviceSelector:
+            raise PydanticCustomError(
+                BOTH_SELECTORS_SET,
+                f'At least one of the **{process_selector_title}** or **{service_selector_title}** must be installed'
+            )
+
+        return self

@@ -22,8 +22,8 @@ class TaskScheduler:
         try:
             subprocess.run(command, check=True, shell=True)
             LOG.info(f"Task '{task_name}' created successfully.")
-        except subprocess.CalledProcessError as e:
-            LOG.error(f"Error creating task '{task_name}': {e}. Command: {command}")
+        except subprocess.CalledProcessError:
+            LOG.exception(f"Error creating task '{task_name}'. Command: {command}")
             raise
 
     @staticmethod
@@ -42,8 +42,8 @@ class TaskScheduler:
         try:
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
             return task_name in result.stdout
-        except subprocess.CalledProcessError as e:
-            LOG.error(f"Error checking task '{task_name}': {e}. Command: {command}")
+        except subprocess.CalledProcessError:
+            LOG.exception(f"Error checking task '{task_name}'. Command: {command}")
             raise
 
     @staticmethod
@@ -59,6 +59,6 @@ class TaskScheduler:
         try:
             subprocess.run(command, check=True, shell=True)
             LOG.info(f"Task '{task_name}' deleted successfully.")
-        except subprocess.CalledProcessError as e:
-            LOG.error(f"Error deleting task '{task_name}': {e}. Command: {command}")
+        except subprocess.CalledProcessError:
+            LOG.exception(f"Error deleting task '{task_name}'. Command: {command}")
             raise

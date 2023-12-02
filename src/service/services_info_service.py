@@ -45,7 +45,7 @@ class ServicesInfoService(ABC):
                     info['status'],
                     info['binpath']
                 )
-            except NoSuchProcess as _:
+            except NoSuchProcess:
                 LOG.warning(f"No such service: {service.name}")
 
         return result

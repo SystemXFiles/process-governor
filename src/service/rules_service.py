@@ -51,6 +51,7 @@ class RulesService(ABC):
         processes: dict[int, Process]
 
         if force:
+            LOG.info("Configuration file has been modified. Reloading all rules to apply changes.")
             processes = ProcessesInfoService.get_list()
         else:
             processes = ProcessesInfoService.get_new_processes()
@@ -90,7 +91,7 @@ class RulesService(ABC):
                                 f"for {process_info.name} ({process_info.pid}"
                                 f"{', ' + service_info.name + '' if service_info else ''}"
                                 f")")
-            except NoSuchProcess as _:
+            except NoSuchProcess:
                 LOG.warning(f"No such process: {pid}")
 
     @classmethod
@@ -104,7 +105,7 @@ class RulesService(ABC):
             process_info.process.ionice(rule.ioPriority)
             LOG.info(
                 f"Set {parameter.value} {iopriority_to_str[rule.ioPriority]} for {process_info.name} ({process_info.pid})")
-        except AccessDenied as _:
+        except AccessDenied:
             not_success.append(parameter)
 
     @classmethod
@@ -118,7 +119,7 @@ class RulesService(ABC):
             process_info.process.nice(rule.priority)
             LOG.info(
                 f"Set {parameter.value} {priority_to_str[rule.priority]} for {process_info.name} ({process_info.pid})")
-        except AccessDenied as _:
+        except AccessDenied:
             not_success.append(parameter)
 
     @classmethod
@@ -135,7 +136,7 @@ class RulesService(ABC):
             process_info.process.cpu_affinity(rule.affinity)
             LOG.info(
                 f"Set {parameter.value} {format_affinity(rule.affinity)} for {process_info.name} ({process_info.pid})")
-        except AccessDenied as _:
+        except AccessDenied:
             not_success.append(parameter)
 
     @classmethod

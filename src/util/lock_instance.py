@@ -3,7 +3,7 @@ import sys
 
 import psutil
 
-from constants.any import LOCK_FILE
+from constants.any import LOCK_FILE_NAME
 
 
 def is_process_running(pid):
@@ -34,16 +34,16 @@ def create_lock_file():
     current process's PID.
     """
 
-    if os.path.isfile(LOCK_FILE):
+    if os.path.isfile(LOCK_FILE_NAME):
         # Check if the process that created the lock file is still running
-        with open(LOCK_FILE, "r") as file:
+        with open(LOCK_FILE_NAME, "r") as file:
             pid_str = file.read().strip()
             if pid_str:
                 if is_process_running(int(pid_str)):
                     sys.exit(1)
 
     # Create the lock file with the current process's PID
-    with open(LOCK_FILE, "w") as file:
+    with open(LOCK_FILE_NAME, "w") as file:
         file.write(str(os.getpid()))
 
 
@@ -53,4 +53,4 @@ def remove_lock_file():
 
     This function deletes the lock file created to ensure that only one instance of the application is running.
     """
-    os.remove(LOCK_FILE)
+    os.remove(LOCK_FILE_NAME)

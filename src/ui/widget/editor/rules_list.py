@@ -8,7 +8,7 @@ from psutil._pswindows import Priority
 from pydantic import ValidationError
 
 from configuration.rule import Rule
-from constants.any import LOG
+from constants.any import LOG, BOTH_SELECTORS_SET
 from constants.priority_mappings import str_to_priority, str_to_iopriority
 from constants.ui import RULE_COLUMNS, ERROR_COLOR, ERROR_ROW_COLOR, RulesListEvents, EditableTreeviewEvents, \
     ScrollableTreeviewEvents
@@ -81,12 +81,10 @@ class RulesList(EditableTreeview):
         self.delete(*self.get_children())
 
         fields = self["columns"]
-        config = ConfigService.load_config()
+        rules = ConfigService.load_rules_raw()
 
-        for index, rule in enumerate(config.rules):
-            rule_dict = rule.model_dump()
-
-            values = [str(rule_dict.get(field_name, '') or '') for field_name in fields]
+        for rule in rules:
+            values = [rule.get(field_name, '') or '' for field_name in fields]
             self.insert('', 'end', values=values)
 
         self._save_state(False)
@@ -96,9 +94,7 @@ class RulesList(EditableTreeview):
             if self.has_error():
                 return False
 
-            config = ConfigService.load_config()
-            config.rules = self._to_rules()
-            ConfigService.save_config(config)
+            ConfigService.save_rules(self._to_rules())
 
             self._save_state(False)
             return True
@@ -116,8 +112,8 @@ class RulesList(EditableTreeview):
 
         try:
             return Rule(**dct)
-        except ValidationError as ve:
-            return row_id, json.loads(ve.json())
+        except ValidationError as e:
+            return row_id, json.loads(e.json())
 
     def _to_rules(self) -> List[Optional[Rule | tuple[Any, Any]]]:
         return [self._to_rule(row_id) for row_id in self.get_children()]
@@ -148,8 +144,13 @@ class RulesList(EditableTreeview):
 
             if errors_by_columns:
                 for column_error in errors_by_columns:
-                    column = column_error["loc"][0]
-                    self._place_icon(row_id, column, column_error)
+                    if column_error["type"] == BOTH_SELECTORS_SET:
+                        columns = ["processSelector", "serviceSelector"]
+                    else:
+                        columns = column_error["loc"]
+
+                    for column in columns:
+                        self._place_icon(row_id, column, column_error)
 
     def _destroy_error_icons(self):
         if self._error_icons:
@@ -175,10 +176,16 @@ class RulesList(EditableTreeview):
                 cursor="hand2"
             )
             icon.bind("<Double-1>", lambda _: self.edit_cell(row_id, column_id), "+")
+
+            user_input = ""
+
+            if isinstance(column_error['input'], str):
+                user_input = f"**User Input:** `{column_error['input']}`"
+
             tooltip = (
-                "The value you entered is __incorrect__. Please check and update it.\n\n"
-                f"**Cause:** {column_error['msg']}.\n"
-                f"**User Input:** `{column_error['input']}`"
+                    "The value you entered is __incorrect__. Please check and update it.\n\n"
+                    f"**Cause:** {column_error['msg']}.\n"
+                    + user_input
             )
             self.error_icon_created(icon, tooltip)
 
