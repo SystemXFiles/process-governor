@@ -1,8 +1,8 @@
 ![Logo Process Governor](../images/starfield-theme-header.png)
 
-## Оптимизация Starfield: Уменьшение лагов с помощью Process Governor
+# Оптимизация Starfield: Уменьшение лагов с помощью Process Governor
 
-[![EN](../icons/readme.png) README](../README.ru.md) | [![EN](../icons/gb.png) English version](starfield.md)
+[![README](../icons/readme.png) README](../README.ru.md) | [![EN](../icons/gb.png) English version](starfield.md)
 
 ---
 

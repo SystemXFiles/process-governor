@@ -1,8 +1,8 @@
 ![Logo Process Governor](../images/sound-theme-header.png)
 
-## Оптимизация звука на ПК с использованием Process Governor
+# Оптимизация звука на ПК с использованием Process Governor
 
-[![EN](../icons/readme.png) README](../README.ru.md) | [![EN](../icons/gb.png) English version](audio.md)
+[![README](../icons/readme.png) README](../README.ru.md) | [![EN](../icons/gb.png) English version](audio.md)
 
 ---
 
@@ -122,10 +122,9 @@ Governor:
   "ruleApplyIntervalSeconds": 1,
   "logging": {
     "enable": true,
-    "filename": "logging.txt",
     "level": "INFO",
-    "maxBytes": 1048576,
-    "backupCount": 2
+    "maxBytes": 1024,
+    "backupCount": 1
   },
   "rules": [
     {

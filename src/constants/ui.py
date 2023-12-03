@@ -11,7 +11,7 @@ ERROR_COLOR = "#e57373"
 ERROR_ROW_COLOR = "#ffcdd2"
 TOOLTIP_ICON_SIZE = 75
 RC_WIN_SIZE = (900, 600)
-RC_TITLE = "Rules configurator"
+RC_TITLE = "Rules Configurator"
 
 
 class ActionEvents:

@@ -1,8 +1,8 @@
 ![Logo Process Governor](../images/starfield-theme-header.png)
 
-## Starfield Optimization: Reduce Stutters with Process Governor
+# Starfield Optimization: Reduce Stutters with Process Governor
 
-[![EN](../icons/readme.png) README](../../README.md) | [![RU](../icons/ru.png) Русская версия](starfield.ru.md)
+[![README](../icons/readme.png) README](../../README.md) | [![RU](../icons/ru.png) Русская версия](starfield.ru.md)
 
 ---
 
