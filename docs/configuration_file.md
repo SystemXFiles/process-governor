@@ -1,6 +1,6 @@
 # Process Governor Configuration File
 
-[![README](icons/readme.png) README](../README.md) | [![EN](icons/gb.png) Русская версия](configuration_file.ru.md)
+[![README](icons/readme.png) README](README.md) | [![EN](icons/gb.png) Русская версия](configuration_file.ru.md)
 
 ---
 

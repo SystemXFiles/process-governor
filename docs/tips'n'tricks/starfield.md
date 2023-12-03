@@ -2,7 +2,7 @@
 
 # Starfield Optimization: Reduce Stutters with Process Governor
 
-[![README](../icons/readme.png) README](../../README.md) | [![RU](../icons/ru.png) Русская версия](starfield.ru.md)
+[![README](../icons/readme.png) README](../README.md) | [![RU](../icons/ru.png) Русская версия](starfield.ru.md)
 
 ---
 
@@ -36,7 +36,7 @@ prevent the Starfield game from utilizing the first processor core:
 Replace "N" with the highest available core/thread number on your processor, beginning from 0.
 
 You can find a detailed description of the section with rules in the
-configuration [here](../../README.md#configuration-format).
+configuration [here](../README.md#configuration-format).
 
 ### Tip 4: Automatic Configuration Update
 

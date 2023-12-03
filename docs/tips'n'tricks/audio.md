@@ -2,7 +2,7 @@
 
 # Optimizing Audio on PC using Process Governor
 
-[![README](../icons/readme.png) README](../../README.md) | [![RU](../icons/ru.png) Русская версия](audio.ru.md)
+[![README](../icons/readme.png) README](../README.md) | [![RU](../icons/ru.png) Русская версия](audio.ru.md)
 
 ---
 
@@ -107,7 +107,7 @@ I also recommend setting the maximum priority - real-time - for all processes re
 
 ### Configuring Process Governor
 
-To begin the configuration, I suggest referring to the [README file](../../README.md) for installing the Process Governor
+To begin the configuration, I suggest referring to the [README file](../README.md) for installing the Process Governor
 utility and understanding the `config.json` configuration file.
 
 Based on the README and the information about the configuration preparation, I propose the following `config.json` file

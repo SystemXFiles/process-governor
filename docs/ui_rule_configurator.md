@@ -1,6 +1,6 @@
 # Configuring Process Governor Rules
 
-[![README](icons/readme.png) README](../README.md) | [![RU](icons/ru.png) Русская версия](ui_rule_configurator.ru.md)
+[![README](icons/readme.png) README](README.md) | [![RU](icons/ru.png) Русская версия](ui_rule_configurator.ru.md)
 
 ---
 

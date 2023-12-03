@@ -1,6 +1,6 @@
-![Logo Process Governor](docs/images/github-banner-readme.png)
+![Logo Process Governor](images/github-banner-readme.png)
 
-[![RU](docs/icons/ru.png) Русская версия](docs/README.ru.md)
+[![RU](icons/ru.png) Русская версия](README.ru.md)
 
 ---
 
@@ -12,7 +12,7 @@ priorities, I/O priorities, and core affinity based on user-defined rules in a J
 - Adjust process and service priorities for better performance.
 - Control I/O priorities to optimize resource utilization.
 - Define core affinity for processes.
-- Fine-tune Windows services and processes based on [user-defined rules](docs/ui_rule_configurator.md).
+- Fine-tune Windows services and processes based on [user-defined rules](ui_rule_configurator.md).
 - Continuous monitoring of the configuration file for rule application.
 - Ability to add ProcessGovernor to autorun.
 
@@ -25,14 +25,14 @@ To get started with **Process Governor**, follow these steps:
 2. Run the `Process Governor.exe` executable with **administrative privileges**.
    This is important to allow the program to make the necessary adjustments to process and service priorities, I/O
    priorities, and core affinity.
-3. [Configure the rules](docs/ui_rule_configurator.md) for processes and services.
+3. [Configure the rules](ui_rule_configurator.md) for processes and services.
 
 You can close the program by accessing the tray icon.
 
 ## Knowledge base
 
-* [Configuring rules](docs/ui_rule_configurator.md)
-* [Configuration file](docs/configuration_file.md)
+* [Configuring rules](ui_rule_configurator.md)
+* [Configuration file](configuration_file.md)
 * [Optimizing Audio on PC](docs/tips'n'tricks/audio.md)
 * [Starfield Optimization: Reduce Stutters](docs/tips'n'tricks/starfield.md)
 

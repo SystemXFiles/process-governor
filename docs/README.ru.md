@@ -1,6 +1,6 @@
 ![Logo Process Governor](images/github-banner-readme.png)
 
-[![EN](icons/gb.png) English version](../README.md)
+[![EN](icons/gb.png) English version](README.md)
 
 ---
 
