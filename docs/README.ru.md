@@ -45,9 +45,10 @@ JSON-конфигурации.
 
 * [Конфигурирование правил](ui_rule_configurator.ru.md)
 * [Файл конфигурации](configuration_file.ru.md)
-* [Оптимизация звука на ПК](tips'n'tricks/audio.ru.md)
-* [Оптимизация Starfield: Уменьшение лагов](tips'n'tricks/starfield.ru.md)
 * [Запуск из исходников и создание портабельной сборки](run_and_build.ru.md)
+* **Советы и трюки**
+  * [Оптимизация звука на ПК](tips'n'tricks/audio.ru.md)
+  * [Оптимизация Starfield: Уменьшение лагов](tips'n'tricks/starfield.ru.md)
 
 ## Лицензия
 

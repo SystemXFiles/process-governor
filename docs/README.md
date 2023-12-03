@@ -43,10 +43,10 @@ You can close the program by accessing the tray icon.
 
 * [Configuring rules](ui_rule_configurator.md)
 * [Configuration file](configuration_file.md)
-* [Optimizing Audio on PC](tips'n'tricks/audio.md)
-* [Starfield Optimization: Reduce Stutters](tips'n'tricks/starfield.md)
 * [Running from source and creating a portable build](run_and_build.md)
-
+* **Tips and Tricks**
+  * [Optimizing Audio on PC](tips'n'tricks/audio.md)
+  * [Starfield Optimization: Reduce Stutters](tips'n'tricks/starfield.md)
 ## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
