@@ -176,6 +176,7 @@ class RulesList(EditableTreeview):
                 cursor="hand2"
             )
             icon.bind("<Double-1>", lambda _: self.edit_cell(row_id, column_id), "+")
+            icon.bind("<Button-1>", lambda _: self.selection_set(row_id), '+')
 
             user_input = ""
 
