@@ -1,4 +1,4 @@
-# Файл конфигурации Process Governor
+# Файл конфигурации
 
 [![README](icons/readme.png) README](README.ru.md) | [![EN](icons/gb.png) English version](configuration_file.md)
 

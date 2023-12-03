@@ -1,12 +1,23 @@
 ![Logo Process Governor](images/github-banner-readme.png)
 
-[![EN](icons/gb.png) English version](README.md)
+[![EN](icons/gb.png) English version](REA
+DME.md)
 
 ---
 
 **Process Governor** - это утилита на Python, предназначенная для управления процессами и службами в Windows путем
 настройки их приоритетов, приоритетов ввода/вывода и привязки к ядрам на основе пользовательских правил, заданных в
 JSON-конфигурации.
+
+<details>
+   <summary>Скриншоты</summary>
+
+   >![tray_menu_screenshot.png](images%2Ftray_menu_screenshot.png)
+   > 
+   >![rule_configurator_screenshot.png](images%2Frule_configurator_screenshot.png)
+   > 
+   >![rule_configurator_with_error_screenshot.png](images%2Frule_configurator_with_error_screenshot.png)
+</details>
 
 ## Возможности
 
@@ -36,31 +47,8 @@ JSON-конфигурации.
 * [Файл конфигурации](configuration_file.ru.md)
 * [Оптимизация звука на ПК](tips'n'tricks/audio.ru.md)
 * [Оптимизация Starfield: Уменьшение лагов](tips'n'tricks/starfield.ru.md)
+* [Запуск из исходников и создание портабельной сборки](run_and_build.ru.md)
 
----
-
-## Запуск из исходников
-
-Для запуска **Process Governor** из исходников выполните следующие шаги:
-
-1. Склонируйте этот репозиторий.
-2. Установите необходимые зависимости с помощью `pip`: `pip install -r requirements.txt`
-3. Запустите скрипт `process-governor.py` с правами администратора: `python process-governor.py`
-4. [Настройте правила](ui_rule_configurator.ru.md) для процессов и сервисов.
-
-## Создание портабельной сборки
-
-Вы можете создать портативную версию программы, используя **PyInstaller**. Чтобы создать портативную версию, выполните
-следующие шаги:
-
-1. Установите PyInstaller с помощью `pip install pyinstaller`.
-2. Запустите скрипт `python build_portable.py`.
-3. После завершения скрипта, вы найдете портативную версию в папке `dist`.
-
-Теперь у вас есть портабельная версия программы, которую можно использовать без установки.
-
----
-
-### Лицензия
+## Лицензия
 
 Этот проект лицензирован согласно GNU General Public License v3.0 - см. файл [LICENSE](LICENSE) для подробностей.

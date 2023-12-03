@@ -1,4 +1,4 @@
-# Конфигурирование правил Process Governor
+# Конфигурирование правил
 
 [![README](icons/readme.png) README](README.ru.md) | [![EN](icons/gb.png) English version](ui_rule_configurator.md)
 

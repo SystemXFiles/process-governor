@@ -7,6 +7,16 @@
 **Process Governor** is a Python utility designed to manage Windows processes and services by adjusting their
 priorities, I/O priorities, and core affinity based on user-defined rules in a JSON configuration.
 
+<details>
+   <summary>Screenshots</summary>
+
+   >![tray_menu_screenshot.png](images%2Ftray_menu_screenshot.png)
+   > 
+   >![rule_configurator_screenshot.png](images%2Frule_configurator_screenshot.png)
+   > 
+   >![rule_configurator_with_error_screenshot.png](images%2Frule_configurator_with_error_screenshot.png)
+</details>
+
 ## Features
 
 - Adjust process and service priorities for better performance.
@@ -35,31 +45,8 @@ You can close the program by accessing the tray icon.
 * [Configuration file](configuration_file.md)
 * [Optimizing Audio on PC](tips'n'tricks/audio.md)
 * [Starfield Optimization: Reduce Stutters](tips'n'tricks/starfield.md)
+* [Running from source and creating a portable build](run_and_build.md)
 
----
-
-## Running from source code
-
-To run **Process Governor** from source code, follow these steps:
-
-1. Clone this repository.
-2. Install the required dependencies using `pip`: `pip install -r requirements.txt`
-3. Run the `process-governor.py` script with **administrative privileges**: `python process-governor.py`
-4. [Configure the rules](docs/ui_rule_configurator.md) for processes and services.
-
-## Creating a portable build
-
-You can create a portable version of the program using **PyInstaller**. Follow these steps to build the portable
-version:
-
-1. Install PyInstaller using `pip install pyinstaller`.
-2. Run the `python build_portable.py` script.
-3. After the script completes, you will find the portable build in the `dist` folder.
-
-Now you have a portable version of the program that you can use without installation.
-
----
-
-### License
+## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
