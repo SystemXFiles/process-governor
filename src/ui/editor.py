@@ -37,6 +37,24 @@ class RuleConfigurator(tk.Tk):
         self.title(f"{RC_TITLE} - {APP_NAME_WITH_VERSION}")
         self.minsize(*RC_WIN_SIZE)
 
+        self.bind_all("<Key>", self._on_key_release, "+")
+
+    @staticmethod
+    def _on_key_release(event):
+        ctrl = (event.state & 0x4) != 0
+
+        if event.keycode == ord('X') and ctrl and event.keysym.lower() != "x":
+            event.widget.event_generate("<<Cut>>")
+
+        if event.keycode == ord('V') and ctrl and event.keysym.lower() != "v":
+            event.widget.event_generate("<<Paste>>")
+
+        if event.keycode == ord('C') and ctrl and event.keysym.lower() != "c":
+            event.widget.event_generate("<<Copy>>")
+
+        if event.keycode == ord('A') and ctrl and event.keysym.lower() != "c":
+            event.widget.event_generate("<<SelectAll>>")
+
     def _center_window(self):
         x = (self.winfo_screenwidth() // 2) - (RC_WIN_SIZE[0] // 2)
         y = (self.winfo_screenheight() // 2) - (RC_WIN_SIZE[1] // 2)
@@ -90,7 +108,7 @@ class RuleConfigurator(tk.Tk):
         self._tree = tree = RulesList(self)
 
         tree.bind("<<TreeviewSelect>>", self._update_buttons_state, "+")
-        tree.bind("<Control-a>", self._select_all, "+")
+        tree.bind("<Control-Key>", self._on_key_press_tree, "+")
         tree.bind("<Delete>", self._delete_selected, "+")
         tree.bind("<Motion>", self._set_tooltip_by_tree, "+")
         tree.bind(RulesListEvents.UNSAVED_CHANGES_STATE, self._update_buttons_state, "+")
@@ -101,6 +119,12 @@ class RuleConfigurator(tk.Tk):
         tree.error_icon_created = lambda icon, tooltip: self._setup_tooltip(icon, tooltip, True, False)
 
         self._setup_tooltip(tree, "", enter=False)
+
+    def _on_key_press_tree(self, event):
+        ctrl = (event.state & 0x4) != 0
+
+        if ctrl and event.keycode == ord('A'):
+            self._select_all(event)
 
     def _create_buttons(self):
         self._actions = actions = ActionsFrame(self)
@@ -268,5 +292,5 @@ def show_rule_editor_error_message():
 
 
 if __name__ == "__main__":
-    app = RuleConfigurator()
-    app.mainloop()
+    test_app = RuleConfigurator()
+    test_app.mainloop()

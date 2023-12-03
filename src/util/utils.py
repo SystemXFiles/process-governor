@@ -17,6 +17,9 @@ def fnmatch_cached(name: str, pattern: str) -> bool:
     Returns:
         bool: True if the name matches the pattern, False otherwise.
     """
+    if not pattern.strip():
+        return False
+
     return pattern and fnmatch(name, pattern)
 
 
