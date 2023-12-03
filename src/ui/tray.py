@@ -63,7 +63,11 @@ def init_tray() -> Icon:
         Menu.SEPARATOR,
 
         MenuItem('Open config file', lambda item: os.startfile(CONFIG_FILE_NAME)),
-        MenuItem('Open log file', lambda item: os.startfile(LOG_FILE_NAME)),
+        MenuItem(
+            'Open log file',
+            lambda item: os.startfile(LOG_FILE_NAME),
+            visible=lambda item: os.path.isfile(LOG_FILE_NAME)
+        ),
         Menu.SEPARATOR,
 
         MenuItem(
