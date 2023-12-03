@@ -33,8 +33,8 @@ You can close the program by accessing the tray icon.
 
 * [Configuring rules](ui_rule_configurator.md)
 * [Configuration file](configuration_file.md)
-* [Optimizing Audio on PC](docs/tips'n'tricks/audio.md)
-* [Starfield Optimization: Reduce Stutters](docs/tips'n'tricks/starfield.md)
+* [Optimizing Audio on PC](tips'n'tricks/audio.md)
+* [Starfield Optimization: Reduce Stutters](tips'n'tricks/starfield.md)
 
 ---
 
