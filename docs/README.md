@@ -10,11 +10,11 @@ priorities, I/O priorities, and core affinity based on user-defined rules in a J
 <details>
    <summary>Screenshots</summary>
 
-   >![tray_menu_screenshot.png](images%2Ftray_menu_screenshot.png)
+   >![tray_menu_screenshot.png](images/tray_menu_screenshot.png)
    > 
-   >![rule_configurator_screenshot.png](images%2Frule_configurator_screenshot.png)
+   >![rule_configurator_screenshot.png](images/rule_configurator_screenshot.png)
    > 
-   >![rule_configurator_with_error_screenshot.png](images%2Frule_configurator_with_error_screenshot.png)
+   >![rule_configurator_with_error_screenshot.png](images/rule_configurator_with_error_screenshot.png)
 </details>
 
 ## Features
@@ -49,4 +49,4 @@ You can close the program by accessing the tray icon.
   * [Starfield Optimization: Reduce Stutters](tips'n'tricks/starfield.md)
 ## License
 
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](../LICENSE) file for details.

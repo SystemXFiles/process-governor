@@ -12,11 +12,11 @@ JSON-конфигурации.
 <details>
    <summary>Скриншоты</summary>
 
-   >![tray_menu_screenshot.png](images%2Ftray_menu_screenshot.png)
+   >![tray_menu_screenshot.png](images/tray_menu_screenshot.png)
    > 
-   >![rule_configurator_screenshot.png](images%2Frule_configurator_screenshot.png)
+   >![rule_configurator_screenshot.png](images/rule_configurator_screenshot.png)
    > 
-   >![rule_configurator_with_error_screenshot.png](images%2Frule_configurator_with_error_screenshot.png)
+   >![rule_configurator_with_error_screenshot.png](images/rule_configurator_with_error_screenshot.png)
 </details>
 
 ## Возможности
@@ -52,4 +52,4 @@ JSON-конфигурации.
 
 ## Лицензия
 
-Этот проект лицензирован согласно GNU General Public License v3.0 - см. файл [LICENSE](LICENSE) для подробностей.
+Этот проект лицензирован согласно GNU General Public License v3.0 - см. файл [LICENSE](../LICENSE) для подробностей.
