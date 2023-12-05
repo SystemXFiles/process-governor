@@ -13,7 +13,7 @@ JSON-конфигурации.
 
    >![tray_menu_screenshot.png](images/tray_menu_screenshot.png)
    > 
-   >![rule_configurator_screenshot.png](images/rule_configurator_screenshot.png)
+   >![audio_artiacle_rule_configurator_screenshot.png](images/audio_artiacle_rule_configurator_screenshot.png)
    > 
    >![rule_configurator_with_error_screenshot.png](images/rule_configurator_with_error_screenshot.png)
 </details>
@@ -42,12 +42,12 @@ JSON-конфигурации.
 
 ## База знаний
 
-* [Конфигурирование правил](ui_rule_configurator.ru.md)
-* [Файл конфигурации](configuration_file.ru.md)
-* [Запуск из исходников и создание портабельной сборки](run_and_build.ru.md)
-* **Советы и трюки**
-  * [Оптимизация звука на ПК](tips'n'tricks/audio.ru.md)
-  * [Оптимизация Starfield: Уменьшение лагов](tips'n'tricks/starfield.ru.md)
+- [Конфигурирование правил](ui_rule_configurator.ru.md)
+- [Файл конфигурации](configuration_file.ru.md)
+- [Запуск из исходников и создание портабельной сборки](run_and_build.ru.md)
+- **Советы и трюки**
+  - [Оптимизация звука](tips'n'tricks/audio.ru.md)
+  - [Оптимизация игр](tips'n'tricks/game_optimization.ru.md)
 
 ## Лицензия
 

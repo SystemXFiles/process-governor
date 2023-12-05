@@ -12,7 +12,7 @@ priorities, I/O priorities, and core affinity based on user-defined rules in a J
 
    >![tray_menu_screenshot.png](images/tray_menu_screenshot.png)
    > 
-   >![rule_configurator_screenshot.png](images/rule_configurator_screenshot.png)
+   >![audio_artiacle_rule_configurator_screenshot.png](images/audio_artiacle_rule_configurator_screenshot.png)
    > 
    >![rule_configurator_with_error_screenshot.png](images/rule_configurator_with_error_screenshot.png)
 </details>
@@ -41,12 +41,12 @@ You can close the program by accessing the tray icon.
 
 ## Knowledge base
 
-* [Configuring rules](ui_rule_configurator.md)
-* [Configuration file](configuration_file.md)
-* [Running from source and creating a portable build](run_and_build.md)
-* **Tips and Tricks**
-  * [Optimizing Audio on PC](tips'n'tricks/audio.md)
-  * [Starfield Optimization: Reduce Stutters](tips'n'tricks/starfield.md)
+- [Configuring rules](ui_rule_configurator.md)
+- [Configuration file](configuration_file.md)
+- [Running from source and creating a portable build](run_and_build.md)
+- **Tips and Tricks**
+  - [Optimizing Audio](tips'n'tricks/audio.md)
+  - [Optimizing Games](tips'n'tricks/game_optimization.md)
 ## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](../LICENSE) file for details.

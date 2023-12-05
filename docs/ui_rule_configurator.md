@@ -6,7 +6,7 @@
 
 ## Opening the Rule Configurator
 
-1. Launch the **Process Governor** application.
+1. Launch the **Process Governor**.
 2. Click on the application icon <u>in the system tray</u> to open the menu.
 3. Select the **Configure Rules** option to open the rule configurator.
 
@@ -16,19 +16,33 @@
 
 The rule configurator interface is a table with several columns:
 
-- **Process Selector**: Specifies which processes will be regulated. You can use file name masks.
-- **Service Selector**: Specifies which Windows services will be regulated. You can use file name masks.
+- **Process Selector**: Specifies the process name or pattern to match.  
+  You can use wildcards, including `*` and `?`, to match multiple processes.
+    - Example: `example.exe`
+    - Example with wildcards: `logioptionsplus_*.exe`
+
+
+- **Service Selector**: Specifies the service name or pattern to match.  
+  You can use wildcards, including `*` and `?`, to match multiple services.
+    - Example: `MyService`
+    - Example with wildcards: `Audio*`
+
+
 - **Priority**: Sets the priority for processes or services.
 - **I/O Priority**: Sets the I/O priority for processes or services.
-- **Affinity**: Determines the affinity of processes to CPU cores.
+- **Affinity**: Specifies CPU core affinity.  
+  You can define affinity as:
+    - Range (inclusive): `1-4`
+    - Specific cores: `0;2;4`
+    - Combination: `1;3-5`
 
 > **Note:**
 >
 > Do not fill in both the **Process Selector** and **Service Selector** fields for a single rule simultaneously.
 > If you set both selectors at the same time, it could lead to conflicts or unpredictable rule behavior.
 >
-> To prevent such situations, validation has been implemented in the program, which will notify you of the need to correct
-> the rule.
+> To prevent such situations, validation has been implemented in the program, which will notify you of the need to
+> correct the rule.
 
 ![rule_configurator_screenshot.png](images/rule_configurator_screenshot.png)
 
@@ -57,7 +71,8 @@ The rule configurator interface is a table with several columns:
 
 ### Saving Changes
 
-1. After you have added, edited, or deleted rules, press the **Save** button at the bottom of the window to apply the changes.
+1. After you have added, edited, or deleted rules, press the **Save** button at the bottom of the window to apply the
+   changes.
 2. A confirmation message will appear upon successful save.
 
 ### Closing the Rule Configurator
@@ -72,7 +87,8 @@ The rule configurator interface is a table with several columns:
 
 ### Error Handling
 
-- If the entered data is incorrect, the corresponding cell will be highlighted, and an error icon will appear next to it.
+- If the entered data is incorrect, the corresponding cell will be highlighted, and an error icon will appear next to
+  it.
 - Hovering over the error icon will display a tooltip with the reason for the error.
 - If there are errors, the **Save** button and the option to save upon closing are not available.
 
