@@ -21,7 +21,7 @@ def fnmatch_cached(name: str, pattern: str) -> bool:
     if pattern:
         pattern = pattern.strip()
 
-    return pattern and fnmatch(name, pattern.strip())
+    return pattern and fnmatch(name, pattern)
 
 
 def is_portable():
