@@ -169,10 +169,8 @@ class RuleConfigurator(tk.Tk):
                 self._update_buttons_state()
 
     def _save(self):
-        if self._tree.save_data():
-            messagebox.showinfo("Save", "Changes saved successfully.")
-        else:
-            messagebox.showerror("Error", "An error occurred while saving.")
+        if not self._tree.save_data():
+            messagebox.showerror(f"Error Detected - {APP_NAME_WITH_VERSION}", "An error occurred while saving.")
 
     def _add(self):
         selected_items = self._tree.selection()
@@ -230,7 +228,7 @@ class RuleConfigurator(tk.Tk):
                     return
 
                 if result and not self._tree.save_data():
-                    messagebox.showerror("Error", "An error occurred while saving.")
+                    messagebox.showerror(f"Error Detected - {APP_NAME_WITH_VERSION}", "An error occurred while saving.")
                     return
 
         self.destroy()
