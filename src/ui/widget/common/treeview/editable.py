@@ -20,7 +20,7 @@ class CellInfo:
     type: ColumnType
 
 
-class CellEditor(ttk.Frame):
+class CellEditor:
     def __init__(
             self,
             master,
@@ -28,12 +28,10 @@ class CellEditor(ttk.Frame):
             *args,
             **kwargs
     ):
-        super().__init__(master, *args, **kwargs)
-
         self._cell = cell_info
-        self._input = self._setup_widgets()
+        self._input = self._setup_widgets(master, *args, **kwargs)
 
-    def _setup_widgets(self):
+    def _setup_widgets(self, master, *args, **kwargs):
         def on_change(_):
             self.event_generate(EditableTreeviewEvents._SAVE_CELL)
 
@@ -41,11 +39,18 @@ class CellEditor(ttk.Frame):
             self.event_generate(EditableTreeviewEvents.ESCAPE)
 
         if self._cell.type == "text":
-            entry_popup = ttk.Entry(self, justify='center')
+            entry_popup = ttk.Entry(master, *args, justify='center', **kwargs)
             entry_popup.insert(0, self._cell.value)
             entry_popup.bind("<FocusOut>", on_change, '+')
         else:
-            entry_popup = ttk.Combobox(self, values=self._cell.values, justify='center', state="readonly")
+            entry_popup = ttk.Combobox(
+                master,
+                *args,
+                values=self._cell.values,
+                justify='center',
+                state="readonly",
+                **kwargs
+            )
             entry_popup.set(self._cell.value)
             entry_popup.bind("<<ComboboxSelected>>", on_change, '+')
 
@@ -58,6 +63,9 @@ class CellEditor(ttk.Frame):
 
     def get(self):
         return self._input.get().strip()
+
+    def __getattr__(self, name):
+        return getattr(self._input, name)
 
 
 class EditableTreeview(ScrollableTreeview):
