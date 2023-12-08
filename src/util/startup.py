@@ -1,7 +1,6 @@
-import os
 import sys
 
-from constants.any import STARTUP_LINK_PATH, STARTUP_TASK_NAME
+from constants.any import STARTUP_TASK_NAME
 from constants.resources import STARTUP_SCRIPT
 from util.scheduler import TaskScheduler
 from util.utils import is_portable
@@ -59,15 +58,4 @@ def fix_startup():
         return
 
     remove_from_startup()
-    add_to_startup()
-
-
-def remove_old_startup_method():
-    """
-    Removes the old startup method by deleting the startup link file if it exists.
-    """
-    if not os.path.isfile(STARTUP_LINK_PATH):
-        return
-
-    os.remove(STARTUP_LINK_PATH)
     add_to_startup()

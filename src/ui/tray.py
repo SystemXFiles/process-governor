@@ -1,19 +1,16 @@
 import os
 import webbrowser
-from time import sleep
 
 import pystray
 from PIL import Image
 from pystray import MenuItem, Menu
 from pystray._win32 import Icon
 
-from configuration.config import Config
-from constants.any import CONFIG_FILE_NAME
+from constants.any import CONFIG_FILE_NAME, LOG_FILE_NAME
 from constants.app_info import APP_NAME_WITH_VERSION, APP_NAME
-from constants.resources import TRAY_ICON
+from constants.resources import APP_ICON
 from constants.updates import UPDATE_URL
-from service.config_service import ConfigService
-from util.decorators import run_in_thread
+from ui.editor import open_rule_editor
 from util.messages import yesno_error_box, show_error, show_info
 from util.startup import toggle_startup, is_in_startup
 from util.updates import check_latest_version
@@ -32,7 +29,7 @@ def check_updates():
 
     if latest_version is None:
         show_error(
-            f"{APP_NAME_WITH_VERSION} - Error Detected",
+            f"Error Detected - {APP_NAME_WITH_VERSION}",
             "Failed to check for updates. Please check your internet connection."
         )
     elif not latest_version:
@@ -56,14 +53,21 @@ def init_tray() -> Icon:
     Returns:
         Icon: The system tray icon.
     """
-    image: Image = Image.open(TRAY_ICON)
-    config: Config = ConfigService.load_config()
+    image: Image = Image.open(APP_ICON)
 
     menu: tuple[MenuItem, ...] = (
         MenuItem(APP_NAME_WITH_VERSION, None, enabled=False),
         Menu.SEPARATOR,
 
-        MenuItem('Open JSON config', lambda item: os.startfile(CONFIG_FILE_NAME), default=True),
+        MenuItem('Configure Rules', lambda item: open_rule_editor(), default=True),
+        Menu.SEPARATOR,
+
+        MenuItem('Open config file', lambda item: os.startfile(CONFIG_FILE_NAME)),
+        MenuItem(
+            'Open log file',
+            lambda item: os.startfile(LOG_FILE_NAME),
+            visible=lambda item: os.path.isfile(LOG_FILE_NAME)
+        ),
         Menu.SEPARATOR,
 
         MenuItem(
@@ -72,7 +76,6 @@ def init_tray() -> Icon:
             lambda item: is_in_startup(),
             visible=is_portable()
         ),
-        MenuItem('Open log file', lambda item: os.startfile(config.logging.filename)),
         MenuItem(
             'Check for Updates',
             lambda item: check_updates()

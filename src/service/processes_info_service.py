@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import List
 
 import psutil
 from psutil import NoSuchProcess
@@ -37,12 +38,12 @@ class ProcessesInfoService(ABC):
                     info['cpu_affinity'],
                     process
                 )
-            except NoSuchProcess as _:
+            except NoSuchProcess:
                 pass
 
         return result
 
-    __prev_pids: list[int] = []
+    __prev_pids: List[int] = []
 
     @classmethod
     def get_new_processes(cls) -> dict[int, Process]:
@@ -70,7 +71,7 @@ class ProcessesInfoService(ABC):
                         info['cpu_affinity'],
                         process
                     )
-                except NoSuchProcess as _:
+                except NoSuchProcess:
                     pass
 
         cls.__prev_pids = current_pids

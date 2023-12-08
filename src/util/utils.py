@@ -1,44 +1,8 @@
 import sys
 from fnmatch import fnmatch
 from functools import lru_cache
-from typing import List, Optional
-
-from psutil import cpu_times
-
-
-@lru_cache
-def parse_affinity(in_affinity: Optional[str]) -> Optional[List[int]]:
-    """
-    Parse a CPU core affinity string and return a list of core numbers.
-
-    Args:
-        in_affinity (Optional[str]): The CPU core affinity string to parse.
-
-    Returns:
-        Optional[List[int]]: A list of CPU core numbers specified in the affinity string.
-    """
-    if in_affinity is None:
-        return None
-
-    affinity = in_affinity.strip()
-
-    if not affinity:
-        return list(range(len(cpu_times(percpu=True))))
-
-    affinity = affinity.split(";")
-    cores: List[int] = []
-
-    for el in affinity:
-        el = el.split('-')
-
-        if len(el) == 2:
-            cores.extend(range(int(el[0]), int(el[1]) + 1))
-        elif len(el) == 1:
-            cores.append(int(el[0]))
-        else:
-            raise ValueError(in_affinity)
-
-    return cores
+from types import NoneType
+from typing import get_origin, get_args, Union, Annotated
 
 
 @lru_cache
@@ -53,6 +17,10 @@ def fnmatch_cached(name: str, pattern: str) -> bool:
     Returns:
         bool: True if the name matches the pattern, False otherwise.
     """
+
+    if pattern:
+        pattern = pattern.strip()
+
     return pattern and fnmatch(name, pattern)
 
 
@@ -90,3 +58,36 @@ def compare_version(version1, version2):
             return -1
 
     return 0
+
+
+def extract_type(annotation):
+    origin = get_origin(annotation)
+
+    if origin is None:
+        return annotation
+
+    args = get_args(annotation)
+
+    if origin == Union:
+        non_none_args = [arg for arg in args if arg != NoneType]
+        if len(non_none_args) == 1:
+            return extract_type(non_none_args[0])
+        else:
+            return [extract_type(arg) for arg in non_none_args]
+
+    elif origin == Annotated:
+        return extract_type(args[0])
+
+    elif args:
+        return origin[tuple(extract_type(arg) for arg in args)]
+
+    return annotation
+
+
+def is_optional_type(annotation):
+    if get_origin(annotation) == Union:
+        union_args = get_args(annotation)
+        for arg in union_args:
+            if arg == NoneType or is_optional_type(arg):
+                return True
+    return False

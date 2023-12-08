@@ -1,5 +1,4 @@
 import os
-import traceback
 from threading import Thread
 from time import sleep
 from typing import Optional
@@ -9,14 +8,16 @@ from psutil._pswindows import Priority, IOPriority
 from pystray._win32 import Icon
 
 from configuration.config import Config
-from constants.any import LOG
+from constants.any import LOG, LOG_FILE_NAME
 from constants.app_info import APP_NAME_WITH_VERSION, APP_NAME
+from constants.ui import RC_TITLE
 from service.config_service import ConfigService
 from service.rules_service import RulesService
+from ui.editor import open_rule_editor, is_editor_open
 from ui.tray import init_tray
 from util.logs import log_setup
 from util.messages import yesno_error_box, show_error
-from util.startup import remove_old_startup_method, fix_startup
+from util.startup import fix_startup
 
 
 def priority_setup():
@@ -48,11 +49,29 @@ def main_loop(tray: Icon):
 
     config: Optional[Config] = None
     is_changed: bool
+    last_error_message = None
 
     while thread.is_alive():
-        config, is_changed = ConfigService.reload_if_changed(config)
+        try:
+            config, is_changed = ConfigService.reload_if_changed(config)
+            RulesService.apply_rules(config, is_changed)
+            last_error_message = None
+        except BaseException as e:
+            if not config:
+                config = Config()
 
-        RulesService.apply_rules(config, is_changed)
+            current_error_message = str(e)
+
+            if current_error_message != last_error_message:
+                LOG.exception("Error in the loop of loading and applying rules.")
+
+                last_error_message = current_error_message
+
+                if ConfigService.rules_has_error():
+                    show_rules_error_message()
+                else:
+                    show_abstract_error_message(False)
+
         sleep(config.ruleApplyIntervalSeconds)
 
     LOG.info('The application has stopped')
@@ -68,7 +87,6 @@ def start_app():
 
     try:
         fix_startup()
-        remove_old_startup_method()
         log_setup()
         priority_setup()
 
@@ -76,29 +94,35 @@ def start_app():
         main_loop(tray)
     except KeyboardInterrupt:
         pass
-    except BaseException as e:
-        LOG.exception(e)
-
-        config: Optional[Config] = None
-
-        try:
-            config = ConfigService.load_config()
-        except:
-            pass
-
-        title = f"{APP_NAME_WITH_VERSION} - Error Detected"
-
-        if config:
-            message = (
-                f"An error has occurred in the {APP_NAME} application. To troubleshoot, please check the log "
-                f"file: {config.logging.filename} for details.\n\nWould you like to open the log file?"
-            )
-
-            if yesno_error_box(title, message):
-                os.startfile(config.logging.filename)
-        else:
-            message = f"An error has occurred in the {APP_NAME} application.\n\n" + traceback.format_exc()
-            show_error(title, message)
+    except:
+        LOG.exception("A critical error occurred, causing the application to stop.")
+        show_abstract_error_message(True)
     finally:
         if tray:
             tray.stop()
+
+
+def show_rules_error_message():
+    title = f"Error Detected - {APP_NAME_WITH_VERSION}"
+    message = "An error has occurred while loading or applying the rules.\n"
+
+    if is_editor_open:
+        message += "Please check the correctness of the rules."
+        show_error(title, message)
+    else:
+        message += f"Would you like to open the {RC_TITLE} to review and correct the rules?"
+        if yesno_error_box(title, message):
+            open_rule_editor()
+
+
+def show_abstract_error_message(will_closed: bool):
+    title = f"Error Detected - {APP_NAME_WITH_VERSION}"
+    will_closed_text = 'The application will now close.' if will_closed else ''
+    message = (
+        f"An error has occurred in the {APP_NAME} application. {will_closed_text}\n"
+        f"To troubleshoot, please check the log file `{LOG_FILE_NAME}` for details.\n\n"
+        f"Would you like to open the log file?"
+    )
+
+    if yesno_error_box(title, message):
+        os.startfile(LOG_FILE_NAME)

@@ -15,6 +15,7 @@ from model.process import Process
 from model.service import Service
 from service.processes_info_service import ProcessesInfoService
 from service.services_info_service import ServicesInfoService
+from util.cpu import format_affinity
 from util.decorators import cached
 from util.utils import fnmatch_cached
 
@@ -50,6 +51,7 @@ class RulesService(ABC):
         processes: dict[int, Process]
 
         if force:
+            LOG.info("Configuration file has been modified. Reloading all rules to apply changes.")
             processes = ProcessesInfoService.get_list()
         else:
             processes = ProcessesInfoService.get_new_processes()
@@ -89,7 +91,7 @@ class RulesService(ABC):
                                 f"for {process_info.name} ({process_info.pid}"
                                 f"{', ' + service_info.name + '' if service_info else ''}"
                                 f")")
-            except NoSuchProcess as _:
+            except NoSuchProcess:
                 LOG.warning(f"No such process: {pid}")
 
     @classmethod
@@ -103,7 +105,7 @@ class RulesService(ABC):
             process_info.process.ionice(rule.ioPriority)
             LOG.info(
                 f"Set {parameter.value} {iopriority_to_str[rule.ioPriority]} for {process_info.name} ({process_info.pid})")
-        except AccessDenied as _:
+        except AccessDenied:
             not_success.append(parameter)
 
     @classmethod
@@ -117,24 +119,24 @@ class RulesService(ABC):
             process_info.process.nice(rule.priority)
             LOG.info(
                 f"Set {parameter.value} {priority_to_str[rule.priority]} for {process_info.name} ({process_info.pid})")
-        except AccessDenied as _:
+        except AccessDenied:
             not_success.append(parameter)
 
     @classmethod
-    def __set_affinity(cls, not_success, process_info, rule: Rule):
-        if rule.affinity is None:
+    def __set_affinity(cls, not_success, process_info: Process, rule: Rule):
+        if not rule.affinity:
             return
 
         parameter = ProcessParameter.AFFINITY
-        affinity_as_list = rule.affinity_as_list()
 
-        if process_info.affinity == affinity_as_list:
+        if process_info.affinity == rule.affinity:
             return
 
         try:
-            process_info.process.cpu_affinity(affinity_as_list)
-            LOG.info(f"Set {parameter.value} {rule.affinity} for {process_info.name} ({process_info.pid})")
-        except AccessDenied as _:
+            process_info.process.cpu_affinity(rule.affinity)
+            LOG.info(
+                f"Set {parameter.value} {format_affinity(rule.affinity)} for {process_info.name} ({process_info.pid})")
+        except AccessDenied:
             not_success.append(parameter)
 
     @classmethod

@@ -45,7 +45,7 @@ class ServicesInfoService(ABC):
                     info['status'],
                     info['binpath']
                 )
-            except NoSuchProcess as _:
+            except NoSuchProcess:
                 LOG.warning(f"No such service: {service.name}")
 
         return result
@@ -63,4 +63,4 @@ class ServicesInfoService(ABC):
         Returns:
             Optional[Service]: The Service object if found, or None if not found.
         """
-        return dct.get(pid, None)
+        return dct.get(pid)

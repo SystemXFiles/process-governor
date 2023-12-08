@@ -26,28 +26,28 @@ str_to_iopriority: Final[dict] = {
 
 
 class PriorityStr:
-    ABOVE_NORMAL: Final[str] = 'AboveNormal'
-    BELOW_NORMAL: Final[str] = 'BelowNormal'
-    HIGH: Final[str] = 'High'
     IDLE: Final[str] = 'Idle'
+    BELOW_NORMAL: Final[str] = 'BelowNormal'
     NORMAL: Final[str] = 'Normal'
+    ABOVE_NORMAL: Final[str] = 'AboveNormal'
+    HIGH: Final[str] = 'High'
     REALTIME: Final[str] = 'Realtime'
 
 
 priority_to_str: Final[dict] = {
-    Priority.ABOVE_NORMAL_PRIORITY_CLASS: PriorityStr.ABOVE_NORMAL,
-    Priority.BELOW_NORMAL_PRIORITY_CLASS: PriorityStr.BELOW_NORMAL,
-    Priority.HIGH_PRIORITY_CLASS: PriorityStr.HIGH,
     Priority.IDLE_PRIORITY_CLASS: PriorityStr.IDLE,
+    Priority.BELOW_NORMAL_PRIORITY_CLASS: PriorityStr.BELOW_NORMAL,
     Priority.NORMAL_PRIORITY_CLASS: PriorityStr.NORMAL,
+    Priority.ABOVE_NORMAL_PRIORITY_CLASS: PriorityStr.ABOVE_NORMAL,
+    Priority.HIGH_PRIORITY_CLASS: PriorityStr.HIGH,
     Priority.REALTIME_PRIORITY_CLASS: PriorityStr.REALTIME,
 }
 
 str_to_priority: Final[dict] = {
-    PriorityStr.ABOVE_NORMAL: Priority.ABOVE_NORMAL_PRIORITY_CLASS,
-    PriorityStr.BELOW_NORMAL: Priority.BELOW_NORMAL_PRIORITY_CLASS,
-    PriorityStr.HIGH: Priority.HIGH_PRIORITY_CLASS,
     PriorityStr.IDLE: Priority.IDLE_PRIORITY_CLASS,
+    PriorityStr.BELOW_NORMAL: Priority.BELOW_NORMAL_PRIORITY_CLASS,
     PriorityStr.NORMAL: Priority.NORMAL_PRIORITY_CLASS,
+    PriorityStr.ABOVE_NORMAL: Priority.ABOVE_NORMAL_PRIORITY_CLASS,
+    PriorityStr.HIGH: Priority.HIGH_PRIORITY_CLASS,
     PriorityStr.REALTIME: Priority.REALTIME_PRIORITY_CLASS,
 }
