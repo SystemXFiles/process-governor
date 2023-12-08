@@ -11,7 +11,6 @@ LOG: Final[Logger] = logging.getLogger("proc-gov")
 LOG_FILE_NAME: Final[str] = "logging.txt"
 LOCK_FILE_NAME: Final[str] = "pg.lock"
 
-STARTUP_LINK_PATH: Final[str] = os.path.join(winshell.startup(), f"{APP_NAME}.lnk")
 STARTUP_TASK_NAME: Final[str] = f"{APP_NAME} Autostart"
 
 CONFIG_FILE_NAME: Final[str] = "config.json"

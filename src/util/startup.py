@@ -1,7 +1,6 @@
-import os
 import sys
 
-from constants.any import STARTUP_LINK_PATH, STARTUP_TASK_NAME
+from constants.any import STARTUP_TASK_NAME
 from constants.resources import STARTUP_SCRIPT
 from util.scheduler import TaskScheduler
 from util.utils import is_portable

@@ -1,5 +1,4 @@
 import os
-import traceback
 from threading import Thread
 from time import sleep
 from typing import Optional
@@ -9,7 +8,6 @@ from psutil._pswindows import Priority, IOPriority
 from pystray._win32 import Icon
 
 from configuration.config import Config
-from configuration.logs import Logs
 from constants.any import LOG, LOG_FILE_NAME
 from constants.app_info import APP_NAME_WITH_VERSION, APP_NAME
 from constants.ui import RC_TITLE
