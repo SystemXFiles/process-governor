@@ -14,6 +14,8 @@
 
 ## Interface of the Rule Configurator
 
+![rule_configurator_screenshot.png](images/rule_configurator_screenshot.png)
+
 The rule configurator interface is a table with several columns:
 
 - **Process Selector**: Specifies the process name or pattern to match.  
@@ -43,8 +45,6 @@ The rule configurator interface is a table with several columns:
 >
 > To prevent such situations, validation has been implemented in the program, which will notify you of the need to
 > correct the rule.
-
-![rule_configurator_screenshot.png](images/rule_configurator_screenshot.png)
 
 ## Working with Rules
 
