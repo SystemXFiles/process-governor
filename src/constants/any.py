@@ -1,9 +1,6 @@
 import logging
-import os
 from logging import Logger
 from typing import Final
-
-import winshell
 
 from constants.app_info import APP_NAME
 
