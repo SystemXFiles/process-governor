@@ -36,12 +36,10 @@ def parse_affinity(in_affinity: str) -> List[int]:
                 cores.append(int(el[0]))
             else:
                 raise ValueError("incorrect format")
-
-        if max(cores) >= cpu_count():
-            raise ValueError("core count exceeds available CPU cores.")
     except Exception:
         raise ValueError("invalid format. Use range `1-4`, specific cores `0;2;4`, or combination `1;3-5`")
 
+    _check_max_cpu_index(cores)
     return cores
 
 
@@ -84,10 +82,18 @@ def format_affinity(cores: List[int]) -> Optional[str]:
 
     result = ";".join(affinity_str)
 
-    if max(cores) >= cpu_count():
-        raise ValueError("core count exceeds available CPU cores.")
-
+    _check_max_cpu_index(cores)
     return result
+
+
+def _check_max_cpu_index(cores):
+    available_cores = cpu_count()
+
+    if max(cores) >= available_cores:
+        raise ValueError(
+            "core count exceeds available CPU cores. "
+            f"Maximum available core index is {available_cores - 1}"
+        )
 
 
 if __name__ == '__main__':
