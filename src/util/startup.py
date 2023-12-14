@@ -47,9 +47,9 @@ def toggle_startup():
         add_to_startup()
 
 
-def fix_startup():
+def update_startup():
     """
-    Fixes autostart if the app has been moved.
+    Update autostart if the app has been moved.
     """
     if not is_portable():
         return

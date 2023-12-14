@@ -17,7 +17,7 @@ from ui.editor import open_rule_editor, is_editor_open
 from ui.tray import init_tray
 from util.logs import log_setup
 from util.messages import yesno_error_box, show_error
-from util.startup import fix_startup
+from util.startup import update_startup
 
 
 def priority_setup():
@@ -56,6 +56,8 @@ def main_loop(tray: Icon):
             config, is_changed = ConfigService.reload_if_changed(config)
             RulesService.apply_rules(config, is_changed)
             last_error_message = None
+        except KeyboardInterrupt as e:
+            raise e
         except BaseException as e:
             if not config:
                 config = Config()
@@ -86,7 +88,7 @@ def start_app():
     tray: Optional[Icon] = None
 
     try:
-        fix_startup()
+        update_startup()
         log_setup()
         priority_setup()
 
