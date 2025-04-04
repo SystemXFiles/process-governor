@@ -6,7 +6,7 @@ from util.utils import is_portable
 
 APP_AUTHOR: Final[str] = "System X - Files"
 APP_NAME: Final[str] = "Process Governor"
-APP_VERSION: Final[str] = "1.3.0"
+APP_VERSION: Final[str] = "1.3.1"
 APP_PROCESSES = {f"{APP_NAME}.exe", "python.exe"}
 
 CURRENT_TAG: Final[str] = f"v{APP_VERSION}"
