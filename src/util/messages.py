@@ -1,3 +1,5 @@
+import threading
+
 from win32api import MessageBoxEx
 
 from constants.app_info import APP_NAME_WITH_VERSION, TITLE_ERROR, APP_TITLE
@@ -21,7 +23,7 @@ def _message_box(title: str, message: str, icon: MBIcon, btn: MBButton) -> MBRes
 
 
 def show_info(message: str, title: str = APP_TITLE):
-    _message_box(title, message, MBIcon.INFORMATION, MBButton.OK)
+    threading.Thread(target=lambda: _message_box(title, message, MBIcon.INFORMATION, MBButton.OK)).start()
 
 
 def yesno_info_box(message: str, title: str = APP_TITLE) -> bool:
@@ -33,7 +35,7 @@ def yesno_question_box(message: str, title: str = APP_TITLE) -> bool:
 
 
 def show_error(message: str, title: str = TITLE_ERROR):
-    _message_box(title, message, MBIcon.ERROR, MBButton.OK)
+    threading.Thread(target=lambda: _message_box(title, message, MBIcon.ERROR, MBButton.OK)).start()
 
 
 def yesno_error_box(message: str, title: str = TITLE_ERROR) -> bool:
